@@ -285,6 +285,7 @@ h1, h2, h3, h4 { font-family: var(--font-primary); font-weight: 800; letter-spac
 
 /* Whatsapp floating button */
 .whatsapp-fab { position: fixed; bottom: 22px; right: 22px; width: 54px; height: 54px; border-radius: 50%; background: #25D366; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; box-shadow: 0 6px 18px rgba(0,0,0,.25); z-index: 60; }
+.whatsapp-fab svg { width: 28px; height: 28px; display: block; }
 
 /* Map placeholder */
 .map-embed { border-radius: var(--radius-card); overflow: hidden; border: 1px solid var(--color-border); }
