@@ -11,7 +11,7 @@ $year = date('Y');
 $lightLogo = $company?->getAttribute('logo_light_media_id')
     ? Media::find((int)$company->getAttribute('logo_light_media_id'))?->getAttribute('url')
     : null;
-$footerCategories = $siteMenu ?? [];
+$footerCategories = !empty($siteMenu) ? $siteMenu : ($menuServices ?? []);
 ?>
 <footer class="site-footer">
   <div class="container footer-grid">
@@ -25,7 +25,7 @@ $footerCategories = $siteMenu ?? [];
     </div>
     <div>
       <h4>Nos services</h4>
-      <div class="footer-service-groups"><?php foreach ($footerCategories as $category): ?><a href="<?= e($category['url']) ?>"><?= e($category['label']) ?></a><?php endforeach; ?></div>
+      <div class="footer-service-groups"><?php foreach ($footerCategories as $category): ?><a href="<?= e($category['url'] ?? ('/' . ltrim((string)($category['slug'] ?? ''), '/'))) ?>"><?= e($category['label'] ?? $category['public_name'] ?? '') ?></a><?php endforeach; ?></div>
     </div>
     <div>
       <h4>Navigation</h4>

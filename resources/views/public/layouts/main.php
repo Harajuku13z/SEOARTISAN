@@ -53,9 +53,9 @@ $isHomePage = isset($page) && $page instanceof \App\Models\Page && $page->getAtt
 <?php endif; ?>
 </head>
 <body class="<?= $isHomePage ? 'page-home' : 'page-inner' ?>">
-<?php if (!$isHomePage): ?><?= view('public.partials.header', ['company' => $company, 'menuServices' => $menuServices, 'siteMenu' => $siteMenu ?? [], 'logoUrl' => $logoUrl ?? null]) ?><?php endif; ?>
+<?= view('public.partials.header', ['company' => $company, 'menuServices' => $menuServices, 'siteMenu' => $siteMenu ?? [], 'logoUrl' => $logoUrl ?? null]) ?>
 <?= $content ?>
-<?php if (!$isHomePage): ?><?= view('public.partials.footer', ['company' => $company, 'menuServices' => $menuServices, 'siteMenu' => $siteMenu ?? [], 'logoUrl' => $logoUrl ?? null]) ?><?php endif; ?>
+<?= view('public.partials.footer', ['company' => $company, 'menuServices' => $menuServices, 'siteMenu' => $siteMenu ?? [], 'logoUrl' => $logoUrl ?? null]) ?>
 <?php if ($company && !empty($company->getAttribute('whatsapp'))): ?>
   <a class="whatsapp-fab" href="https://wa.me/<?= e(preg_replace('/\D/', '', (string) $company->getAttribute('whatsapp'))) ?>" target="_blank" rel="noopener" aria-label="Contacter sur WhatsApp">WA</a>
 <?php endif; ?>

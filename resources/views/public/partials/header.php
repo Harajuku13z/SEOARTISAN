@@ -7,6 +7,7 @@ $name = $company?->getAttribute('trade_name') ?? config('app.name');
 $initials = mb_strtoupper(mb_substr((string) $name, 0, 1));
 $logo = $logoUrl ?? null;
 $social = (array)($company?->getAttribute('social_links') ?? []);
+$navigationServices = !empty($siteMenu) ? $siteMenu : ($menuServices ?? []);
 ?>
 <header class="site-header">
   <div class="site-header-inner">
@@ -15,8 +16,8 @@ $social = (array)($company?->getAttribute('social_links') ?? []);
   </a>
   <nav class="site-nav">
     <a href="/">Accueil</a>
-    <div class="nav-item has-children services-menu"><a href="#services" class="services-trigger" aria-expanded="false">Nos services</a><div class="sub-menu mega-menu">
-      <?php foreach (($siteMenu ?? []) as $item): ?><div class="mega-group"><button type="button" class="mega-title" aria-expanded="false"><?= e($item['label']) ?><span aria-hidden="true">+</span></button><div class="mega-children"><a class="mega-category-link" href="<?= e($item['url']) ?>">Voir toute la catégorie →</a><?php foreach (($item['children'] ?? []) as $child): ?><a href="<?= e($child['url']) ?>"><?= e($child['label']) ?></a><?php endforeach; ?></div></div><?php endforeach; ?>
+    <div class="nav-item has-children services-menu"><a href="/#services" class="services-trigger" aria-expanded="false">Nos services</a><div class="sub-menu mega-menu">
+      <?php foreach ($navigationServices as $item): ?><div class="mega-group"><button type="button" class="mega-title" aria-expanded="false"><?= e($item['label'] ?? $item['public_name'] ?? '') ?><span aria-hidden="true">+</span></button><div class="mega-children"><?php if (!empty($item['children'])): ?><a class="mega-category-link" href="<?= e($item['url'] ?? '/#services') ?>">Voir toute la catégorie →</a><?php endif; ?><?php foreach (($item['children'] ?? []) as $child): ?><a href="<?= e($child['url']) ?>"><?= e($child['label']) ?></a><?php endforeach; ?><?php if (empty($item['children']) && !empty($item['slug'])): ?><a href="/<?= e($item['slug']) ?>">Découvrir ce service →</a><?php endif; ?></div></div><?php endforeach; ?>
     </div></div>
     <a href="/realisations">Réalisations</a>
     <a href="/a-propos">À propos</a>
