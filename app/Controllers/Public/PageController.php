@@ -81,7 +81,7 @@ final class PageController
 
         $data = array_merge($base, [
             'page' => $page,
-            'pageTitle' => $page->getAttribute('title') ?: $page->getAttribute('h1'),
+            'pageTitle' => $page->getAttribute('meta_title') ?: $page->getAttribute('title') ?: $page->getAttribute('h1'),
             'metaDescription' => $page->getAttribute('meta_description'),
             'canonicalUrl' => $canonicalUrl,
             'ogImageUrl' => $this->ogImageUrl($page, $base['company'] ?? null),
