@@ -1,0 +1,21 @@
+CREATE TABLE IF NOT EXISTS projects (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT NULL,
+    category VARCHAR(150) NULL,
+    city_id INT UNSIGNED NULL,
+    company_service_id INT UNSIGNED NULL,
+    project_date DATE NULL,
+    before_media_id INT UNSIGNED NULL,
+    after_media_id INT UNSIGNED NULL,
+    gallery JSON NULL,
+    alt_text VARCHAR(255) NULL,
+    is_visible TINYINT(1) NOT NULL DEFAULT 1,
+    sort_order INT NOT NULL DEFAULT 0,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_projects_city FOREIGN KEY (city_id) REFERENCES cities (id) ON DELETE SET NULL,
+    CONSTRAINT fk_projects_company_service FOREIGN KEY (company_service_id) REFERENCES company_services (id) ON DELETE SET NULL,
+    CONSTRAINT fk_projects_before_media FOREIGN KEY (before_media_id) REFERENCES media (id) ON DELETE SET NULL,
+    CONSTRAINT fk_projects_after_media FOREIGN KEY (after_media_id) REFERENCES media (id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

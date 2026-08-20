@@ -1,0 +1,20 @@
+CREATE TABLE IF NOT EXISTS leads (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    form_submission_id INT UNSIGNED NULL,
+    name VARCHAR(150) NOT NULL,
+    phone VARCHAR(30) NULL,
+    email VARCHAR(191) NULL,
+    postal_code VARCHAR(10) NULL,
+    city VARCHAR(150) NULL,
+    company_service_id INT UNSIGNED NULL,
+    time_slot VARCHAR(60) NULL,
+    message TEXT NULL,
+    source_page_id INT UNSIGNED NULL,
+    status ENUM('new', 'to_contact', 'contacted', 'quoted', 'won', 'lost', 'spam') NOT NULL DEFAULT 'new',
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_leads_form_submission FOREIGN KEY (form_submission_id) REFERENCES form_submissions (id) ON DELETE SET NULL,
+    CONSTRAINT fk_leads_company_service FOREIGN KEY (company_service_id) REFERENCES company_services (id) ON DELETE SET NULL,
+    CONSTRAINT fk_leads_source_page FOREIGN KEY (source_page_id) REFERENCES pages (id) ON DELETE SET NULL,
+    INDEX idx_leads_status (status)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

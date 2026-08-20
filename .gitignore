@@ -1,0 +1,29 @@
+/.env
+/.DS_Store
+/.phpunit.cache/
+/vendor/
+
+# Donnees generees pour chaque client
+/public/uploads/**
+!/public/uploads/.gitkeep
+/storage/cache/**
+!/storage/cache/.gitkeep
+/storage/logs/**
+!/storage/logs/.gitkeep
+/storage/sessions/**
+!/storage/sessions/.gitkeep
+/storage/backups/**
+!/storage/backups/.gitkeep
+/storage/import_realisations/
+/storage/installed.lock
+/public/sitemap.xml
+
+# Installations et copies historiques, jamais distribuees avec le modele
+/LM NEW/
+/blog/
+/public/.wp-extract/
+
+# Scripts ponctuels contenant des donnees client
+/test_remote_db.php
+/update_mail_html.php
+

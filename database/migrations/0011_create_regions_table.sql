@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS regions (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(150) NOT NULL,
+    code VARCHAR(10) NOT NULL,
+    UNIQUE KEY uniq_regions_code (code)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

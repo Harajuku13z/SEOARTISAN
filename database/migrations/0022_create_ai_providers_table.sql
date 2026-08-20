@@ -1,0 +1,14 @@
+CREATE TABLE IF NOT EXISTS ai_providers (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    provider ENUM('openai', 'anthropic', 'compatible', 'none') NOT NULL DEFAULT 'none',
+    api_key_encrypted TEXT NULL,
+    model VARCHAR(120) NULL,
+    base_url VARCHAR(500) NULL,
+    temperature DECIMAL(3,2) NOT NULL DEFAULT 0.60,
+    max_tokens INT UNSIGNED NOT NULL DEFAULT 2000,
+    language VARCHAR(10) NOT NULL DEFAULT 'fr',
+    tone VARCHAR(255) NULL,
+    is_active TINYINT(1) NOT NULL DEFAULT 1,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

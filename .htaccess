@@ -1,0 +1,26 @@
+# OVH shared-hosting front controller. The subdomain document root is this
+# directory, while the public application entry point stays in /public.
+Options -Indexes
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    RewriteRule ^assets/(.*)$ public/assets/$1 [L]
+    RewriteRule ^uploads/(.*)$ public/uploads/$1 [L]
+    RewriteRule ^favicon\.ico$ public/favicon.ico [L]
+
+    # ACME/OVH validation files must remain directly reachable.
+    RewriteRule ^\.well-known/ - [L]
+
+    # Never expose application source or configuration files.
+    RewriteRule ^(?:app|config|database|resources|routes|scripts|storage|vendor)(?:/|$) - [F,L,NC]
+    RewriteRule ^(?:bootstrap\.php|composer\.(?:json|lock)|\.env(?:\.example)?|README\.md|phpunit\.xml)$ - [F,L,NC]
+
+    RewriteRule ^ public/index.php [L,QSA]
+</IfModule>
+
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
