@@ -41,7 +41,7 @@ $trackingConfig=['enabled'=>$trackingEnabled,'endpoint'=>'/track/event','csrf'=>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/theme.css?v=20260821-2">
-<link rel="stylesheet" href="/assets/css/professional.css?v=20260821-2">
+<link rel="stylesheet" href="/assets/css/professional.css?v=20260821-3">
 <?php if ($company): ?>
 <style>
   :root {
