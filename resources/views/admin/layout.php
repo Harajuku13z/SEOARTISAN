@@ -13,6 +13,7 @@ if (!function_exists('admin_nav_link')) {
         return '<a href="' . e($url) . '" class="' . $class . '">' . e($label) . '</a>';
     }
 }
+$callsReadRow=\App\Models\Setting::first(['key'=>'tracking.calls_read_at']);$callsRead=$callsReadRow?json_decode((string)$callsReadRow->getAttribute('value'),true):null;$unreadCalls=\App\Models\ConversionEvent::humanCallCount(is_string($callsRead)&&$callsRead!==''?$callsRead:'1970-01-01 00:00:00');
 ?>
 <!doctype html>
 <html lang="fr">
@@ -20,7 +21,7 @@ if (!function_exists('admin_nav_link')) {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Administration - <?= e(config('app.name')) ?></title>
-<link rel="stylesheet" href="/assets/css/admin.css?v=20260805-1">
+<link rel="stylesheet" href="/assets/css/admin.css?v=20260821-1">
 </head>
 <body>
 <div class="admin-shell">
@@ -34,7 +35,7 @@ if (!function_exists('admin_nav_link')) {
       <?= admin_nav_link('dashboard', $activeNav, '/admin', 'Vue d’ensemble') ?>
       <div class="group-label">Prospects</div>
       <a href="/admin/leads" class="admin-leads-link <?= $activeNav === 'leads' ? 'active' : '' ?>"><span>Formulaires &amp; leads</span><?php if (($newLeadsCount ?? 0) > 0): ?><b class="admin-notification"><?= (int) $newLeadsCount ?></b><?php endif; ?></a>
-      <?= admin_nav_link('conversions', $activeNav, '/admin/conversions', 'Conversions & anti-bot') ?>
+      <a href="/admin/conversions" class="admin-leads-link <?= $activeNav === 'conversions' ? 'active' : '' ?>"><span>Appels &amp; conversions</span><?php if($activeNav!=='conversions'&&$unreadCalls>0): ?><b class="admin-notification"><?= $unreadCalls>99?'99+':(int)$unreadCalls ?></b><?php endif; ?></a>
       <div class="group-label">Site &amp; contenus</div>
       <?= admin_nav_link('company', $activeNav, '/admin/company', 'Entreprise & identité') ?>
       <?= admin_nav_link('pages', $activeNav, '/admin/pages', 'Accueil & pages') ?>
