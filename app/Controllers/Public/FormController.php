@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace App\Controllers\Public;
+use App\Support\Crypto;
 
 use App\Core\Request;
 use App\Core\Response;
@@ -147,7 +148,8 @@ final class FormController
             $this->notifyAdmin($formType, $payload, $lead->id());
             $this->confirmToCustomer($payload);
         }
-        ConversionEvent::create(['event_type'=>$isSpam?'form_attempt':'form_conversion','element_text'=>$formType==='quote'?'Demande de devis':'Formulaire de contact','target_url'=>null,'page_path'=>$sourcePath,'session_id'=>mb_substr((string)$request->input('session_id',''),0,64)?:null,'ip_hash'=>hash('sha256',$request->ip().'|'.csrf_token()),'user_agent'=>mb_substr($request->userAgent(),0,255),'is_human'=>!$isSpam,'bot_score'=>$assessment['score'],'rejection_reason'=>$assessment['reasons']?implode(',',$assessment['reasons']):null,'metadata'=>['form_type'=>$formType]]);
+        $city=trim((string)$request->header('CF-IPCity',''));$country=trim((string)$request->header('CF-IPCountry',''));
+        ConversionEvent::create(['event_type'=>$isSpam?'form_attempt':'form_conversion','element_text'=>$formType==='quote'?'Demande de devis':'Formulaire de contact','target_url'=>null,'page_path'=>$sourcePath,'location_label'=>trim(implode(', ',array_filter([$city,$country])))?:null,'session_id'=>mb_substr((string)$request->input('session_id',''),0,64)?:null,'ip_hash'=>hash('sha256',$request->ip().'|'.csrf_token()),'ip_encrypted'=>Crypto::encrypt($request->ip(),(string)config('app.key','')),'user_agent'=>mb_substr($request->userAgent(),0,255),'is_human'=>!$isSpam,'bot_score'=>$assessment['score'],'rejection_reason'=>$assessment['reasons']?implode(',',$assessment['reasons']):null,'metadata'=>['form_type'=>$formType]]);
 
         if (!$request->wantsJson()) {
             return Response::redirect('/succes');
