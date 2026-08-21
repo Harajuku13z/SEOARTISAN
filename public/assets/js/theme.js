@@ -151,7 +151,7 @@
     });
   });
 
-  var lightboxSelector = '.gallery-grid img, .before-after img, .ph-project-grid img';
+  var lightboxSelector = '.gallery-grid img, .before-after img, .ph-project-grid img, .project-photo img';
   var overlay = null;
   var overlayImg = null;
   var overlayCaption = null;
@@ -193,7 +193,8 @@
 
   function openLightbox(img) {
     if (!overlay) { buildOverlay(); }
-    lightboxImages = Array.prototype.slice.call(document.querySelectorAll(lightboxSelector));
+    var figure = img.closest ? img.closest('figure') : null;
+    lightboxImages = Array.prototype.slice.call((figure || document).querySelectorAll(lightboxSelector));
     var index = lightboxImages.indexOf(img);
     showLightboxIndex(index === -1 ? 0 : index);
     lastFocused = document.activeElement;

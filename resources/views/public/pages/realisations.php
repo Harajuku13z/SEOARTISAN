@@ -19,8 +19,8 @@ $mediaUrl = static fn($id) => $id ? Media::find((int)$id)?->getAttribute('url') 
     <p><?= e($description) ?></p>
   </div></section>
   <?php if ($projects): ?><section class="ph-section projects-showcase"><div class="marketing-project-grid">
-    <?php foreach ($projects as $project): $image = $mediaUrl($project->getAttribute('after_media_id')) ?: $mediaUrl($project->getAttribute('before_media_id')); ?>
-      <figure><?php if ($image): ?><img src="<?= e($image) ?>" alt="<?= e($project->getAttribute('alt_text') ?: $project->getAttribute('title')) ?>" loading="lazy"><?php else: ?><div class="marketing-image-empty" aria-hidden="true">R</div><?php endif; ?><figcaption><strong><?= e($project->getAttribute('title')) ?></strong><?php if ($project->getAttribute('category')): ?><span><?= e($project->getAttribute('category')) ?></span><?php endif; ?></figcaption></figure>
+    <?php foreach ($projects as $project): $before=$mediaUrl($project->getAttribute('before_media_id'));$after=$mediaUrl($project->getAttribute('after_media_id'));$image=$after?:$before;$count=(int)(bool)$before+(int)(bool)$after; ?>
+      <figure><?php if ($image): ?><div class="project-photo" tabindex="0" role="button" aria-label="Voir les <?= $count ?> photos de <?= e($project->getAttribute('title')) ?>"><img src="<?= e($image) ?>" alt="<?= e($project->getAttribute('alt_text') ?: $project->getAttribute('title')) ?>" loading="lazy"><?php if($before&&$after): ?><img class="project-gallery-extra" src="<?= e($before) ?>" alt="Avant — <?= e($project->getAttribute('title')) ?>" loading="lazy"><?php endif; ?><span>▧ <?= $count ?> photo<?= $count>1?'s':'' ?></span></div><?php else: ?><div class="marketing-image-empty" aria-hidden="true">R</div><?php endif; ?><figcaption><strong><?= e($project->getAttribute('title')) ?></strong><?php if ($project->getAttribute('category')): ?><span><?= e($project->getAttribute('category')) ?></span><?php endif; ?></figcaption></figure>
     <?php endforeach; ?>
   </div></section><?php endif; ?>
   <?= $blocksHtml ?>
