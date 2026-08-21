@@ -24,6 +24,7 @@ use App\Controllers\Public\FormController;
 use App\Controllers\Public\BlogController;
 use App\Controllers\Public\PageController;
 use App\Controllers\Public\RobotsController;
+use App\Controllers\Public\TrackingController;
 use App\Middleware\CsrfMiddleware;
 use App\Middleware\InstallerLockMiddleware;
 use App\Middleware\PageCacheMiddleware;
@@ -96,4 +97,7 @@ $router->group(['middleware' => [CsrfMiddleware::class, RateLimitMiddleware::cla
     $router->post('/devis/brouillon', [FormController::class, 'draft']);
     $router->post('/devis', [FormController::class, 'quote']);
     $router->post('/contact', [FormController::class, 'contact']);
+});
+$router->group(['middleware' => [CsrfMiddleware::class, RateLimitMiddleware::class . ':tracking,120,60']], function ($router) {
+    $router->post('/track/event', [TrackingController::class, 'event']);
 });

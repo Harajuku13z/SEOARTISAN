@@ -15,6 +15,7 @@ use App\Controllers\Admin\AuthController;
 use App\Controllers\Admin\BusinessCategoriesController;
 use App\Controllers\Admin\BlogController;
 use App\Controllers\Admin\CompanyController;
+use App\Controllers\Admin\ConversionsController;
 use App\Controllers\Admin\DashboardController;
 use App\Controllers\Admin\LeadsController;
 use App\Controllers\Admin\LocationsController;
@@ -46,6 +47,7 @@ $router->group(['prefix' => 'admin', 'middleware' => [CsrfMiddleware::class]], f
 $router->group(['prefix' => 'admin', 'middleware' => [AuthMiddleware::class, CsrfMiddleware::class]], function ($router) {
     $router->post('/logout', [AuthController::class, 'logout']);
     $router->get('', [DashboardController::class, 'index']);
+    $router->get('/conversions', [ConversionsController::class, 'index']);
 
     $router->get('/company', [CompanyController::class, 'show']);
     $router->post('/company', [CompanyController::class, 'update']);

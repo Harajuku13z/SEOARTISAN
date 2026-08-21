@@ -10,7 +10,7 @@ $success = flash_message('success');
 
 <div class="card">
   <form method="post" action="/admin/settings">
-    <?= csrf_field() ?>
+    <?= csrf_field() ?><input type="hidden" name="settings_section" value="seo">
     <label>Nom du site</label>
     <input type="text" name="site_name" value="<?= e($seo?->getAttribute('site_name')) ?>">
     <label>Modele de titre par defaut</label>
@@ -20,6 +20,19 @@ $success = flash_message('success');
     <label>Code de verification Google Search Console</label>
     <input type="text" name="gsc_verification_code" value="<?= e($seo?->getAttribute('gsc_verification_code')) ?>">
     <button type="submit">Enregistrer</button>
+  </form>
+</div>
+
+<div class="card">
+  <h2>Conversions Google &amp; protection anti-bot</h2>
+  <p class="hint">Les conversions ne sont envoyées qu’après validation de signaux humains. Pour mesurer la durée réelle des appels, configurez également une conversion « Appels depuis le site » et un numéro de transfert dans Google Ads.</p>
+  <form method="post" action="/admin/settings">
+    <?= csrf_field() ?><input type="hidden" name="settings_section" value="tracking">
+    <label class="checkbox-row"><input type="checkbox" name="tracking_enabled" value="1" <?= !empty($tracking['enabled'])?'checked':'' ?>> Activer le tracker de conversions</label>
+    <div class="row"><label>Identifiant Google tag<input name="google_tag_id" value="<?= e($tracking['google_tag_id']) ?>" placeholder="AW-123456789 ou G-XXXXXXXX"></label><label>Label conversion appels<input name="google_call_label" value="<?= e($tracking['google_call_label']) ?>" placeholder="AbCdEFghijk"></label></div>
+    <label>Label conversion formulaires<input name="google_form_label" value="<?= e($tracking['google_form_label']) ?>" placeholder="XyZ123abc"></label>
+    <div class="row"><label>Délai humain minimum (secondes)<input type="number" min="2" max="60" name="human_min_seconds" value="<?= (int)$tracking['human_min_seconds'] ?>"></label><label>Interactions minimum<input type="number" min="1" max="20" name="human_min_interactions" value="<?= (int)$tracking['human_min_interactions'] ?>"></label></div>
+    <button type="submit">Enregistrer le suivi</button>
   </form>
 </div>
 

@@ -1,4 +1,13 @@
 (function () {
+  var trackingConfig=window.__trackingConfig||{};var trackingStart=Date.now();var trackingInteractions=0;var trackingSession='s'+Date.now().toString(36)+Math.random().toString(36).slice(2,12);
+  ['pointerdown','keydown','touchstart','scroll'].forEach(function(type){document.addEventListener(type,function(){trackingInteractions=Math.min(99,trackingInteractions+1);},{passive:true});});
+  function humanFields(){return {_human_elapsed:Math.floor((Date.now()-trackingStart)/1000),_human_interactions:trackingInteractions,_human_webdriver:navigator.webdriver?'1':'0',_human_visible:document.visibilityState==='visible'?'1':'0',session_id:trackingSession};}
+  function addHumanFields(data){var fields=humanFields();Object.keys(fields).forEach(function(key){data.set(key,fields[key]);});return data;}
+  async function trackEvent(type,element){if(!trackingConfig.enabled)return {human:false};var data=new FormData();data.set('_csrf_token',trackingConfig.csrf||'');data.set('event_type',type);data.set('page_path',location.pathname);data.set('element_text',(element&&element.textContent||'').trim().slice(0,255));data.set('target_url',element&&element.href||'');addHumanFields(data);try{var response=await fetch(trackingConfig.endpoint,{method:'POST',headers:{Accept:'application/json'},body:data,keepalive:true});return await response.json();}catch(error){return {human:false};}}
+  function googleConversion(kind){if(typeof window.gtag!=='function'||localStorage.getItem('tracking_consent')!=='granted')return;var label=kind==='call'?trackingConfig.googleCallLabel:trackingConfig.googleFormLabel;if(trackingConfig.googleTagId&&label)window.gtag('event','conversion',{send_to:trackingConfig.googleTagId+'/'+label,value:1,currency:'EUR'});if(kind==='form')window.gtag('event','generate_lead',{currency:'EUR',value:1,lead_source:'website'});}
+  window.__humanTracking={fields:humanFields,add:addHumanFields,track:trackEvent,conversion:googleConversion};
+  var consent=document.querySelector('[data-tracking-consent]');if(consent){var choice=localStorage.getItem('tracking_consent');if(!choice)consent.hidden=false;function setConsent(value){localStorage.setItem('tracking_consent',value);consent.hidden=true;if(typeof window.gtag==='function')window.gtag('consent','update',{analytics_storage:value==='granted'?'granted':'denied',ad_storage:value==='granted'?'granted':'denied',ad_user_data:value==='granted'?'granted':'denied',ad_personalization:value==='granted'?'granted':'denied'});}consent.querySelector('[data-consent-accept]').addEventListener('click',function(){setConsent('granted');});consent.querySelector('[data-consent-refuse]').addEventListener('click',function(){setConsent('denied');});if(choice)setConsent(choice);}
+  document.addEventListener('click',function(event){var target=event.target.closest&&event.target.closest('a,button,input[type="submit"]');if(!target)return;var href=target.getAttribute('href')||'';var type=href.indexOf('tel:')===0?'call_click':(href.indexOf('wa.me')!==-1?'whatsapp_click':(target.tagName==='A'?'link_click':'button_click'));if(type==='call_click'){event.preventDefault();var destination=target.href;var fallback=setTimeout(function(){location.href=destination;},850);trackEvent(type,target).then(function(result){clearTimeout(fallback);if(result.human)googleConversion('call');location.href=destination;});}else trackEvent(type,target);},true);
   document.querySelectorAll('.ph-cities[data-city-pool]').forEach(function (el) {
     var pool = [];
     try { pool = JSON.parse(el.getAttribute('data-city-pool') || '[]'); } catch (err) { pool = []; }
@@ -114,13 +123,15 @@
       if (errorBox) { errorBox.style.display = 'none'; }
 
       try {
+        var formData = new FormData(form); addHumanFields(formData); formData.set('event_type','form_attempt');
         var res = await fetch(form.action, {
           method: 'POST',
-          body: new FormData(form),
+          body: formData,
           headers: { 'Accept': 'application/json' }
         });
         var json = await res.json();
         if (json.ok) {
+          if(json.conversion){googleConversion('form');}
           window.location.href = json.redirect || '/succes';
           return;
           form.style.display = 'none';

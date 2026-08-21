@@ -9,10 +9,12 @@ use App\Core\Response;
 use App\Core\Logger;
 use App\Models\Company;
 use App\Models\CompanyService;
+use App\Models\ConversionEvent;
 use App\Models\FormSubmission;
 use App\Models\Lead;
 use App\Services\Mail\SmtpMailer;
 use App\Services\Media\MediaUploadService;
+use App\Services\Tracking\HumanSignalService;
 
 /**
  * Handles both the quote form (POST /devis) and the contact form
@@ -22,7 +24,7 @@ use App\Services\Media\MediaUploadService;
  */
 final class FormController
 {
-    public function __construct(private SmtpMailer $mailer, private MediaUploadService $uploads)
+    public function __construct(private SmtpMailer $mailer, private MediaUploadService $uploads, private HumanSignalService $humans)
     {
     }
 
@@ -38,6 +40,7 @@ final class FormController
 
     public function draft(Request $request): Response
     {
+        $assessment=$this->humans->assess($request);if(!$assessment['is_human'])return Response::json(['ok'=>true,'filtered'=>true]);
         $name=trim((string)$request->input('name',''));$phone=trim((string)$request->input('phone',''));$email=trim((string)$request->input('email',''));
         if($name===''||$phone===''||$email===''||!filter_var($email,FILTER_VALIDATE_EMAIL))return Response::json(['ok'=>false,'message'=>'Nom, téléphone et e-mail valides sont obligatoires.'],422);
         $token=bin2hex(random_bytes(24));
@@ -61,7 +64,8 @@ final class FormController
             return Response::json(['ok' => false, 'message' => 'Merci de saisir une adresse e-mail valide.'], 422);
         }
 
-        $isSpam = $this->isSpam($request);
+        $assessment = $this->humans->assess($request);
+        $isSpam = !$assessment['is_human'];
         $sourceUrl = trim((string) $request->input('source_url', ''));
         if ($sourceUrl === '') {
             $sourceUrl = trim((string) $request->header('Referer', ''));
@@ -121,7 +125,7 @@ final class FormController
             'ip_address' => $request->ip(),
             'user_agent' => $request->userAgent(),
             'is_spam' => $isSpam,
-            'spam_score' => $isSpam ? 100 : 0,
+            'spam_score' => $assessment['score'],
         ]);
 
         if (!$isSpam) {
@@ -143,11 +147,12 @@ final class FormController
             $this->notifyAdmin($formType, $payload, $lead->id());
             $this->confirmToCustomer($payload);
         }
+        ConversionEvent::create(['event_type'=>$isSpam?'form_attempt':'form_conversion','element_text'=>$formType==='quote'?'Demande de devis':'Formulaire de contact','target_url'=>null,'page_path'=>$sourcePath,'session_id'=>mb_substr((string)$request->input('session_id',''),0,64)?:null,'ip_hash'=>hash('sha256',$request->ip().'|'.csrf_token()),'user_agent'=>mb_substr($request->userAgent(),0,255),'is_human'=>!$isSpam,'bot_score'=>$assessment['score'],'rejection_reason'=>$assessment['reasons']?implode(',',$assessment['reasons']):null,'metadata'=>['form_type'=>$formType]]);
 
         if (!$request->wantsJson()) {
             return Response::redirect('/succes');
         }
-        return Response::json(['ok' => true, 'message' => 'Votre demande a bien été envoyée.', 'redirect' => '/succes']);
+        return Response::json(['ok' => true, 'message' => 'Votre demande a bien été envoyée.', 'redirect' => '/succes', 'conversion' => !$isSpam]);
     }
 
     private function notifyAdmin(string $formType, array $payload, int $leadId): void
@@ -197,12 +202,4 @@ final class FormController
         }
     }
 
-    /**
-     * Minimal, dependency-free spam heuristic: a filled honeypot field
-     * means a bot filled every input including the hidden one.
-     */
-    private function isSpam(Request $request): bool
-    {
-        return trim((string) $request->input('website', '')) !== '';
-    }
 }

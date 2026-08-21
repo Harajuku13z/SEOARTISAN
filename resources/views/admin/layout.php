@@ -34,6 +34,7 @@ if (!function_exists('admin_nav_link')) {
       <?= admin_nav_link('dashboard', $activeNav, '/admin', 'Vue d’ensemble') ?>
       <div class="group-label">Prospects</div>
       <a href="/admin/leads" class="admin-leads-link <?= $activeNav === 'leads' ? 'active' : '' ?>"><span>Formulaires &amp; leads</span><?php if (($newLeadsCount ?? 0) > 0): ?><b class="admin-notification"><?= (int) $newLeadsCount ?></b><?php endif; ?></a>
+      <?= admin_nav_link('conversions', $activeNav, '/admin/conversions', 'Conversions & anti-bot') ?>
       <div class="group-label">Site &amp; contenus</div>
       <?= admin_nav_link('company', $activeNav, '/admin/company', 'Entreprise & identité') ?>
       <?= admin_nav_link('pages', $activeNav, '/admin/pages', 'Accueil & pages') ?>
