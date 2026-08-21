@@ -93,6 +93,8 @@ $success = flash_message('success');
           </div>
           <label>Texte</label>
           <textarea name="home_zone_text" rows="3"><?= e($homeCopy['zone_text']) ?></textarea>
+          <label>Villes mises en avant</label>
+          <textarea name="home_zone_cities" rows="2" placeholder="Une ville par ligne ou séparées par des virgules"><?= e($homeCopy['zone_cities'] ?? '') ?></textarea>
         </div>
         <div class="admin-public-copy-group">
           <label>Photo affichée à côté de cette section</label>
