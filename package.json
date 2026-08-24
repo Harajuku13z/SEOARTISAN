@@ -1,0 +1,7 @@
+{
+  "name": "ets-guillaume-site",
+  "private": true,
+  "scripts": {"build:notifications": "esbuild frontend/notifications.jsx --bundle --minify --format=iife --outfile=public/assets/js/notifications.js"},
+  "dependencies": {"react": "^19.1.1", "react-dom": "^19.1.1", "sonner": "^2.0.7"},
+  "devDependencies": {"esbuild": "^0.25.9"}
+}

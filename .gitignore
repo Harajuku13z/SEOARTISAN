@@ -2,6 +2,7 @@
 /.DS_Store
 /.phpunit.cache/
 /vendor/
+/node_modules/
 
 # Donnees generees pour chaque client
 /public/uploads/**
@@ -26,4 +27,3 @@
 # Scripts ponctuels contenant des donnees client
 /test_remote_db.php
 /update_mail_html.php
-

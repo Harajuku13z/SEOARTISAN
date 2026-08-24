@@ -116,6 +116,7 @@
     if (callbackField) { callbackField.required = true; }
     form.addEventListener('submit', async function (e) {
       e.preventDefault();
+      document.dispatchEvent(new CustomEvent('ets:form-submitting'));
       var submitBtn = form.querySelector('button[type=submit]');
       var successBox = form.parentElement.querySelector('[data-form-success]');
       var errorBox = form.querySelector('[data-form-error]');
@@ -132,19 +133,24 @@
         var json = await res.json();
         if (json.ok) {
           if(json.conversion){googleConversion('form');}
+          sessionStorage.setItem('ets_form_success', '1');
           window.location.href = json.redirect || '/succes';
           return;
           form.style.display = 'none';
           if (successBox) { successBox.style.display = 'block'; }
         } else if (errorBox) {
-          errorBox.textContent = json.message || 'Une erreur est survenue, veuillez reessayer.';
+          var message = json.message || 'Une erreur est survenue, veuillez reessayer.';
+          errorBox.textContent = message;
           errorBox.style.display = 'block';
+          document.dispatchEvent(new CustomEvent('ets:form-error', { detail: { message: message } }));
         }
       } catch (err) {
+        var networkMessage = 'Erreur reseau, veuillez reessayer.';
         if (errorBox) {
-          errorBox.textContent = 'Erreur reseau, veuillez reessayer.';
+          errorBox.textContent = networkMessage;
           errorBox.style.display = 'block';
         }
+        document.dispatchEvent(new CustomEvent('ets:form-error', { detail: { message: networkMessage } }));
       } finally {
         if (submitBtn) { submitBtn.disabled = false; }
       }

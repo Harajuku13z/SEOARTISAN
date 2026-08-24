@@ -7,7 +7,9 @@ Options -Indexes
 
     RewriteRule ^assets/(.*)$ public/assets/$1 [L]
     RewriteRule ^uploads/(.*)$ public/uploads/$1 [L]
+    RewriteRule ^sitemap\.xml$ public/sitemap.xml [L]
     RewriteRule ^favicon\.ico$ public/favicon.ico [L]
+    RewriteRule ^wordpress(?:/|$) - [L]
 
     # ACME/OVH validation files must remain directly reachable.
     RewriteRule ^\.well-known/ - [L]

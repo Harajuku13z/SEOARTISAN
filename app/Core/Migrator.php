@@ -29,6 +29,12 @@ final class Migrator
                 UNIQUE KEY uniq_migration (migration)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
         ");
+        // Older installations used `applied_at`; keep their migration
+        // ledger usable when the current runner is deployed over them.
+        $columns = $this->db->select("SHOW COLUMNS FROM `{$table}` LIKE 'run_at'");
+        if ($columns === []) {
+            $this->db->execute("ALTER TABLE `{$table}` ADD COLUMN run_at DATETIME NULL AFTER batch");
+        }
     }
 
     /** @return array<int,string> */
