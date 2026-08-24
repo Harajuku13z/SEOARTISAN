@@ -42,7 +42,7 @@ $trackingConfig=['enabled'=>$trackingEnabled,'endpoint'=>'/track/event','csrf'=>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/theme.css?v=20260821-2">
 <link rel="stylesheet" href="/assets/css/professional.css?v=20260824-5">
-<link rel="stylesheet" href="/assets/css/ets-design-system.css?v=20260824-1">
+<link rel="stylesheet" href="/assets/css/ets-design-system.css?v=20260824-2">
 <link rel="stylesheet" href="/assets/js/notifications.css?v=20260824-1">
 <?php if ($company): ?>
 <style>
