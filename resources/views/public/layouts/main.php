@@ -17,6 +17,10 @@ $trackingGet=static function(string $key,mixed $default=null):mixed{$row=\App\Mo
 $trackingEnabled=(bool)$trackingGet('tracking.enabled',false);
 $googleTagId=trim((string)$trackingGet('tracking.google_tag_id',''));
 $trackingConfig=['enabled'=>$trackingEnabled,'endpoint'=>'/track/event','csrf'=>csrf_token(),'googleTagId'=>$googleTagId,'googleCallLabel'=>(string)$trackingGet('tracking.google_call_label',''),'googleFormLabel'=>(string)$trackingGet('tracking.google_form_label','')];
+$themePresetRow=\App\Models\Setting::first(['key'=>'visual.theme_preset']);
+$themePreset=$themePresetRow?trim((string)(json_decode((string)$themePresetRow->getAttribute('value'),true)?:'')):'';
+$themePreset=preg_match('/^[a-z0-9-]{1,60}$/',$themePreset)?$themePreset:'';
+$brandFonts=['Archivo'];
 ?>
 <!doctype html>
 <html lang="<?= e(config('app.locale')) ?>">
@@ -38,12 +42,13 @@ $trackingConfig=['enabled'=>$trackingEnabled,'endpoint'=>'/track/event','csrf'=>
 <?php if($trackingEnabled&&preg_match('/^(AW-\d+|G-[A-Z0-9]+)$/',$googleTagId)): ?><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('consent','default',{analytics_storage:'denied',ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied'});gtag('js',new Date());gtag('config',<?= json_encode($googleTagId) ?>);</script><script async src="https://www.googletagmanager.com/gtag/js?id=<?= e(rawurlencode($googleTagId)) ?>"></script><?php endif; ?>
 <script>window.__trackingConfig=<?= json_encode($trackingConfig,JSON_UNESCAPED_SLASHES) ?>;</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Public+Sans:wght@400;500;600&family=<?= e(implode('&', array_map(static fn ($f) => 'family=' . $f . ':wght@400;600;700;800', $brandFonts))) ?>&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/theme.css?v=20260821-2">
+<link rel="stylesheet" href="/assets/css/theme.css?v=20260825-1">
 <link rel="stylesheet" href="/assets/css/professional.css?v=20260824-5">
 <link rel="stylesheet" href="/assets/css/ets-design-system.css?v=20260824-2">
 <link rel="stylesheet" href="/assets/js/notifications.css?v=20260824-1">
+<?php if ($themePreset !== ''): ?><link rel="stylesheet" href="/assets/css/presets/<?= e($themePreset) ?>.css?v=20260825-1"><?php endif; ?>
 <?php if ($company): ?>
 <style>
   :root {

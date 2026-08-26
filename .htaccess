@@ -14,6 +14,11 @@ Options -Indexes
     # ACME/OVH validation files must remain directly reachable.
     RewriteRule ^\.well-known/ - [L]
 
+    # Legacy Laravel URLs kept during the JC TOITURES migration.
+    RewriteRule ^legal/mentions/?$ /mentions-legales [R=301,L]
+    RewriteRule ^legal/privacy/?$ /politique-confidentialite [R=301,L]
+    RewriteRule ^legal/cgv/?$ /conditions-generales-vente [R=301,L]
+
     # Never expose application source or configuration files.
     RewriteRule ^(?:app|config|database|resources|routes|scripts|storage|vendor)(?:/|$) - [F,L,NC]
     RewriteRule ^(?:bootstrap\.php|composer\.(?:json|lock)|\.env(?:\.example)?|README\.md|phpunit\.xml)$ - [F,L,NC]

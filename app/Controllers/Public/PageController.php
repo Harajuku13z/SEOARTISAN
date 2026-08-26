@@ -6,6 +6,7 @@ namespace App\Controllers\Public;
 
 use App\Models\BusinessCategory;
 use App\Models\Company;
+use App\Models\Faq;
 use App\Core\Request;
 use App\Core\Response;
 use App\Models\Media;
@@ -217,6 +218,18 @@ final class PageController
                     if (!empty($item['question']) && !empty($item['answer'])) {
                         $faqItems[] = ['question' => $item['question'], 'answer' => $item['answer']];
                     }
+                }
+            }
+        }
+
+        // FAQs rattachées au service (rich snippets FAQPage)
+        $companyServiceId = (int) ($page->getAttribute('company_service_id') ?? 0);
+        if ($companyServiceId > 0) {
+            foreach (Faq::forSubject('CompanyService', $companyServiceId) as $faq) {
+                $question = trim((string) $faq->getAttribute('question'));
+                $answer = trim((string) $faq->getAttribute('answer'));
+                if ($question !== '' && $answer !== '') {
+                    $faqItems[] = ['question' => $question, 'answer' => $answer];
                 }
             }
         }
