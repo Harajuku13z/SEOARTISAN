@@ -1,5 +1,5 @@
 <?php
-use App\Models\CompanyService;use App\Models\Media;use App\Models\Project;use App\Models\Setting;use App\Models\Testimonial;
+use App\Models\CompanyService;use App\Models\Media;use App\Models\Page;use App\Models\Project;use App\Models\Setting;use App\Models\Testimonial;
 $name=(string)($company?->getAttribute('trade_name')?:config('app.name','Votre artisan'));
 $phone=(string)($company?->getAttribute('phone')??'');$phoneHref=preg_replace('/\D+/','',$phone);
 $email=(string)($company?->getAttribute('public_email')??'');
@@ -138,6 +138,33 @@ $postImage=static fn(array $post):?string=>is_string($post['_embedded']['wp:feat
   <?php endif; ?>
 
   <?= view('public.partials.zone_editorial',['company'=>$company,'copy'=>$copy]) ?>
+
+  <?php
+  $sectorPages = array_values(array_filter(
+      Page::where(['type' => 'local', 'status' => 'published', 'indexable' => 1], 'title ASC'),
+      static fn ($p) => (string) $p->getAttribute('slug') !== ''
+  ));
+  if ($sectorPages): ?>
+  <section class="jt-section jt-sectors">
+    <div class="jt-wrap">
+      <div class="jt-section-head">
+        <div>
+          <span class="jt-eyebrow">Nos secteurs d'intervention</span>
+          <h2>Un couvreur près de chez vous, dans tout le Val-d'Oise</h2>
+        </div>
+        <p>Découvrez nos interventions commune par commune et demandez votre devis gratuit en ligne.</p>
+      </div>
+      <nav class="jt-sector-grid" aria-label="Communes desservies">
+        <?php foreach ($sectorPages as $sectorPage): ?>
+        <a class="jt-sector-link" href="/<?= e($sectorPage->getAttribute('slug')) ?>">
+          <strong><?= e($sectorPage->getAttribute('title')) ?></strong>
+          <em>Voir les interventions<span aria-hidden="true"> →</span></em>
+        </a>
+        <?php endforeach; ?>
+      </nav>
+    </div>
+  </section>
+  <?php endif; ?>
 
   <?php if($reviews): ?>
   <section class="jt-section jt-reviews" id="avis">
