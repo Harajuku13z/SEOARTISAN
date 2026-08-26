@@ -8,7 +8,9 @@ $h1=(string)($page->getAttribute('h1')?:('Expert en rénovation et entretien de 
 $intro=(string)($company?->getAttribute('short_description')?:'Une expertise locale et des interventions soignées pour tous vos projets.');
 $aboutText=(string)($company->getAttribute('long_description') ?: $company->getAttribute('editorial_presentation') ?: $intro);
 $hero=$company?->getAttribute('hero_media_id')?Media::find((int)$company->getAttribute('hero_media_id'))?->getAttribute('url'):null;
-$aboutImage=$company?->getAttribute('logo_main_media_id')?$hero:$hero;
+$mediaUrl=static fn($id)=>$id?Media::find((int)$id)?->getAttribute('url'):null;
+$legacyHero=null;foreach(Media::where(['url'=>'/uploads/homepage/a-propos.jpeg']) as $m){$legacyHero=$m->getAttribute('url');break;}
+$aboutImage=$legacyHero!==null?$legacyHero:$hero;
 $services=array_values(array_filter(CompanyService::all('sort_order ASC'),static fn($service)=>(bool)$service->getAttribute('is_active')));
 $projects=array_slice(Project::visible(),0,3);
 $allReviews=Testimonial::visible();
@@ -19,7 +21,6 @@ $googleCount=count(array_filter($allReviews,static fn($t)=>$t->getAttribute('sou
 $certifications=(array)($company?->getAttribute('certifications')??[]);
 $years=$company?->getAttribute('founded_year')?max(0,(int)date('Y')-(int)$company->getAttribute('founded_year')):null;
 $radius=$company?->getAttribute('service_radius_km');
-$mediaUrl=static fn($id)=>$id?Media::find((int)$id)?->getAttribute('url'):null;
 $defaults=['hero_eyebrow'=>'Artisan local','services_eyebrow'=>'Nos prestations','services_title'=>'Des services adaptés à vos besoins','about_eyebrow'=>'Qui sommes-nous','about_title'=>'Un savoir-faire de proximité','projects_eyebrow'=>'Nos réalisations','projects_title'=>'Des chantiers menés avec soin','reviews_eyebrow'=>'Avis clients','reviews_title'=>'La satisfaction de nos clients','blog_eyebrow'=>'Conseils & expertise','blog_title'=>'Nos derniers articles'];
 $copy=array_merge($defaults,json_decode((string)(Setting::first(['key'=>'content.home_copy'])?->getAttribute('value')??'{}'),true)?:[]);
 $stats=[];
@@ -100,7 +101,7 @@ $postImage=static fn(array $post):?string=>is_string($post['_embedded']['wp:feat
 
   <section class="jt-section jt-about" id="a-propos">
     <div class="jt-wrap jt-about-grid">
-      <div class="jt-about-visual"><?php if($hero): ?><img src="<?= e($hero) ?>" alt="<?= e($name) ?> en intervention" loading="lazy"><?php endif; ?><span class="jt-about-badge"><strong><?= e($name) ?></strong><small><?= $city!==''?e($city).' · ':'' ?>Val-d'Oise</small></span></div>
+      <div class="jt-about-visual"><?php if($aboutImage): ?><img src="<?= e($aboutImage) ?>" alt="<?= e($name) ?> en intervention" loading="lazy"><?php endif; ?><span class="jt-about-badge"><strong><?= e($name) ?></strong><small><?= $city!==''?e($city).' · ':'' ?>Val-d'Oise</small></span></div>
       <div class="jt-about-copy">
         <span class="jt-eyebrow"><?= e($copy['about_eyebrow']) ?></span>
         <h2><?= e($copy['about_title']) ?></h2>

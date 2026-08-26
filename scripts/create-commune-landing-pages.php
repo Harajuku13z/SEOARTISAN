@@ -602,6 +602,14 @@ foreach ($communes as $c) {
         'data' => ['content' => $c['intro']], 'is_active' => true,
     ]);
     PageBlock::create([
+        'page_id' => $pageId, 'type' => 'image', 'position' => $position++,
+        'data' => [
+            'url' => '/uploads/homepage/hero-toiture.jpg',
+            'alt' => 'Toiture en tuiles terracotta entretenue par JC TOITURES à ' . $c['name'] . ' (couvreur Val-d\'Oise)',
+        ],
+        'is_active' => true,
+    ]);
+    PageBlock::create([
         'page_id' => $pageId, 'type' => 'list', 'position' => $position++,
         'data' => ['heading' => $c['interventions_heading'], 'items' => $c['interventions']], 'is_active' => true,
     ]);
@@ -611,6 +619,9 @@ foreach ($communes as $c) {
     ]);
     PageBlock::create([
         'page_id' => $pageId, 'type' => 'services', 'position' => $position++, 'data' => [], 'is_active' => true,
+    ]);
+    PageBlock::create([
+        'page_id' => $pageId, 'type' => 'projects', 'position' => $position++, 'data' => [], 'is_active' => true,
     ]);
     PageBlock::create([
         'page_id' => $pageId, 'type' => 'faq', 'position' => $position++,
