@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 680" role="img" aria-labelledby="jt-title jt-desc">
+<title id="jt-title">Zones d’intervention JC TOITURES : Val-d’Oise (95)</title>
+<desc id="jt-desc">Carte stylisée du département du Val-d’Oise avec les principales communes d’intervention de JC TOITURES autour de Jouy-le-Moutier.</desc>
+<rect width="1000" height="680" rx="28" fill="#1c1917"/>
+<!-- Contour stylisé du Val-d'Oise -->
+<path d="M120 300 L150 240 L200 200 L260 170 L330 150 L400 140 L470 145 L540 155 L610 165 L670 185 L720 215 L760 250 L790 295 L810 345 L815 395 L800 445 L775 490 L740 525 L700 555 L650 575 L595 585 L540 588 L485 582 L430 570 L380 550 L335 525 L295 495 L260 460 L230 420 L205 378 L185 340 L160 320 Z" fill="#c2410c" stroke="#ffffff" stroke-width="7" stroke-linejoin="round"/>
+<!-- Rivière Oise stylisée -->
+<path d="M180 520 Q300 480 380 430 Q470 372 560 350 Q660 326 780 330" fill="none" stroke="#38b6ff" stroke-width="9" opacity=".55" stroke-linecap="round"/>
+<g fill="#ffffff" text-anchor="middle" font-family="Arial,Helvetica,sans-serif">
+  <text x="468" y="330" font-size="110" font-weight="800">95</text>
+  <text x="468" y="388" font-size="36" font-weight="700">VAL-D’OISE</text>
+</g>
+<!-- Communes -->
+<g font-family="Arial,Helvetica,sans-serif" font-size="21" fill="#ffffff">
+  <!-- Jouy-le-Moutier : siège -->
+  <g>
+    <circle cx="500" cy="452" r="17" fill="#f59e0b"/>
+    <circle cx="500" cy="452" r="30" fill="#f59e0b" opacity=".28"/>
+    <text x="500" y="505" font-weight="800" font-size="24">Jouy-le-Moutier</text>
+    <text x="500" y="532" font-size="18" opacity=".85">Siège • 17 allée des Éguerets</text>
+  </g>
+  <circle cx="438" cy="470" r="10"/><text x="438" y="442">Cergy</text>
+  <circle cx="412" cy="498" r="10"/><text x="392" y="534">Pontoise</text>
+  <circle cx="548" cy="472" r="10"/><text x="600" y="450">Vauréal</text>
+  <circle cx="360" cy="452" r="10"/><text x="330" y="478">Menucourt</text>
+  <circle cx="580" cy="520" r="10"/><text x="618" y="552">Neuville-sur-Oise</text>
+  <circle cx="620" cy="430" r="10"/><text x="668" y="416">Osny</text>
+  <circle cx="665" cy="370" r="10"/><text x="712" y="356">L’Isle-Adam</text>
+  <circle cx="640" cy="270" r="10"/><text x="688" y="256">Sarcelles</text>
+  <circle cx="560" cy="255" r="10"/><text x="560" y="228">Franconville</text>
+  <circle cx="470" cy="235" r="10"/><text x="470" y="208">Taverny</text>
+  <circle cx="330" cy="300" r="10"/><text x="290" y="278">Herblay</text>
+  <circle cx="268" cy="368" r="10"/><text x="212" y="352">Cormeilles</text>
+  <circle cx="330" cy="415" r="10"/><text x="252" y="404">Argenteuil</text>
+</g>
+<text x="500" y="648" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="28" font-weight="700" fill="#ffffff">JC TOITURES • ZONES D’INTERVENTION • RAYON 40 KM</text>
+</svg>

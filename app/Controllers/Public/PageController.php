@@ -51,7 +51,7 @@ final class PageController
             'latestBlogPosts' => $latestBlogPosts,
         ]);
 
-        return Response::html(view_layout('public.layouts.main', 'public.pages.home_editorial', $data));
+        return Response::html(view_layout('public.layouts.main', 'public.pages.home_modern', $data));
     }
 
     public function bySlug(Request $request, array $params): Response
