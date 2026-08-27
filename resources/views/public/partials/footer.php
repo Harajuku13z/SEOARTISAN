@@ -49,6 +49,10 @@ $footerCategories = !empty($siteMenu) ? $siteMenu : ($menuServices ?? []);
   </div>
   <div class="container footer-bottom">
     <span>&copy; <?= e($year) ?> <?= e($name) ?> - Tous droits reserves</span>
+    <?php $visitsCounterOn = (bool) (new \App\Repositories\SettingsRepository(\App\Core\Database::instance()))->get('visits.public_counter', true); ?>
+    <?php if ($visitsCounterOn): ?>
+    <span id="visit-counter" data-offset-key="visits.counter_offset" hidden></span>
+    <?php endif; ?>
     <div style="display:flex;gap:16px">
       <a href="/mentions-legales">Mentions legales</a>
       <a href="/politique-confidentialite">Confidentialite</a>
@@ -56,3 +60,16 @@ $footerCategories = !empty($siteMenu) ? $siteMenu : ($menuServices ?? []);
     </div>
   </div>
 </footer>
+<?php if ($visitsCounterOn ?? false): ?>
+<script>
+(function(){
+  var el=document.getElementById('visit-counter');if(!el)return;
+  fetch('/track/stats',{headers:{'Accept':'application/json'}}).then(function(r){return r.json()}).then(function(d){
+    if(!d||!d.ok)return;
+    var label=d.total>1?'visiteurs':'visiteur';
+    el.textContent=d.total.toLocaleString('fr-FR')+' '+label+' depuis l\'ouverture · '+d.today+' aujourd\'hui';
+    el.hidden=false;
+  }).catch(function(){});
+})();
+</script>
+<?php endif; ?>

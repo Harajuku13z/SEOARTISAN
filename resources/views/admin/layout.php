@@ -41,6 +41,7 @@ $callsReadRow=\App\Models\Setting::first(['key'=>'tracking.calls_read_at']);$cal
       <?= admin_nav_link('pages', $activeNav, '/admin/pages', 'Accueil & pages') ?>
       <?= admin_nav_link('blog', $activeNav, '/admin/blog', 'Blog WordPress') ?>
       <?= admin_nav_link('menu', $activeNav, '/admin/menu', 'Menu & sous-menus') ?>
+      <?= admin_nav_link('visits', $activeNav, '/admin/visits', 'Audience & robots') ?>
       <?= admin_nav_link('locations', $activeNav, '/admin/locations', 'Zones d’intervention') ?>
       <?= admin_nav_link('local_pages', $activeNav, '/admin/local-pages', 'Pages locales') ?>
       <?= admin_nav_link('categories', $activeNav, '/admin/business-categories', 'Métiers') ?>

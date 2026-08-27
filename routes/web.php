@@ -29,6 +29,7 @@ use App\Middleware\CsrfMiddleware;
 use App\Middleware\InstallerLockMiddleware;
 use App\Middleware\PageCacheMiddleware;
 use App\Middleware\RateLimitMiddleware;
+use App\Middleware\VisitTrackerMiddleware;
 
 $router->group(['prefix' => 'install', 'middleware' => [InstallerLockMiddleware::class]], function ($router) {
     $router->get('/', [TechCheckController::class, 'show']);
@@ -72,7 +73,14 @@ $router->group(['prefix' => 'install', 'middleware' => [InstallerLockMiddleware:
     });
 });
 
-$router->group(['middleware' => [PageCacheMiddleware::class]], function ($router) {
+// Fichiers techniques et endpoint live — jamais mis en cache de page.
+$router->group(['middleware' => [VisitTrackerMiddleware::class]], function ($router) {
+    $router->get('/robots.txt', [RobotsController::class, 'index']);
+    $router->get('/llms.txt', [RobotsController::class, 'llms']);
+    $router->get('/track/stats', [TrackingController::class, 'stats']);
+});
+
+$router->group(['middleware' => [VisitTrackerMiddleware::class, PageCacheMiddleware::class]], function ($router) {
     $router->get('/', [PageController::class, 'home']);
     $router->get('/avis-clients', [PageController::class, 'reviews']);
     $router->get('/succes', [PageController::class, 'success']);
@@ -81,8 +89,6 @@ $router->group(['middleware' => [PageCacheMiddleware::class]], function ($router
     // $router->get('/simulateur-aides', [PageController::class, 'aidesSimulator']);
     $router->get('/blog', [BlogController::class, 'index']);
     $router->get('/blog/{slug}', [BlogController::class, 'show']);
-
-    $router->get('/robots.txt', [RobotsController::class, 'index']);
 
 
 
