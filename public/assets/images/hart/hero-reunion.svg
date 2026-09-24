@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 900" role="img" aria-label="Illustration : toitures en tôle rouge et bleue face aux montagnes et à l'océan de La Réunion">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8FB4E8"/>
+      <stop offset=".62" stop-color="#DCE8F8"/>
+      <stop offset="1" stop-color="#F6F1DC"/>
+    </linearGradient>
+    <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3A5EA8"/>
+      <stop offset="1" stop-color="#2A4886"/>
+    </linearGradient>
+    <linearGradient id="mnt1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#6C86B8"/>
+      <stop offset="1" stop-color="#8FA6CF"/>
+    </linearGradient>
+    <linearGradient id="mnt2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2F6B4F"/>
+      <stop offset="1" stop-color="#3F8560"/>
+    </linearGradient>
+    <linearGradient id="roofRed" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#C8101A"/>
+      <stop offset="1" stop-color="#E51720"/>
+    </linearGradient>
+    <linearGradient id="roofBlue" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#2D4C8C"/>
+      <stop offset="1" stop-color="#3A5EA8"/>
+    </linearGradient>
+    <pattern id="ribsRed" width="18" height="40" patternUnits="userSpaceOnUse">
+      <rect width="18" height="40" fill="url(#roofRed)"/>
+      <rect x="0" width="4" height="40" fill="#FF4A52" opacity=".55"/>
+      <rect x="12" width="3" height="40" fill="#9E0C14" opacity=".35"/>
+    </pattern>
+    <pattern id="ribsBlue" width="16" height="40" patternUnits="userSpaceOnUse">
+      <rect width="16" height="40" fill="url(#roofBlue)"/>
+      <rect x="0" width="4" height="40" fill="#6F8FD0" opacity=".55"/>
+      <rect x="11" width="3" height="40" fill="#1E3566" opacity=".35"/>
+    </pattern>
+    <clipPath id="frame"><rect width="1000" height="900" rx="0"/></clipPath>
+  </defs>
+  <g clip-path="url(#frame)">
+    <rect width="1000" height="900" fill="url(#sky)"/>
+    <!-- Soleil et rayons (rappel du logo) -->
+    <g transform="translate(800 150)">
+      <g fill="#EEE414" opacity=".85">
+        <path d="M0 0 L-260 -30 L-260 -8 Z"/>
+        <path d="M0 0 L-200 -170 L-186 -186 Z"/>
+        <path d="M0 0 L-40 -240 L-14 -240 Z"/>
+        <path d="M0 0 L150 -200 L168 -186 Z"/>
+        <path d="M0 0 L260 -40 L260 -16 Z"/>
+      </g>
+      <circle r="62" fill="#EEE414"/>
+      <circle r="62" fill="#fff" opacity=".18"/>
+    </g>
+    <!-- Nuages -->
+    <g fill="#fff" opacity=".9">
+      <ellipse cx="190" cy="140" rx="90" ry="26"/>
+      <ellipse cx="250" cy="122" rx="60" ry="28"/>
+      <ellipse cx="560" cy="210" rx="70" ry="18"/>
+    </g>
+    <!-- Montagnes (Piton des Neiges / remparts) -->
+    <path d="M0 470 L90 400 L170 420 L290 250 L360 300 L420 230 L520 330 L610 300 L700 360 L820 290 L1000 380 L1000 560 L0 560 Z" fill="url(#mnt1)"/>
+    <path d="M0 520 L120 450 L230 470 L330 390 L450 460 L560 420 L680 480 L800 430 L1000 470 L1000 600 L0 600 Z" fill="url(#mnt2)"/>
+    <!-- Océan -->
+    <path d="M0 560 C 200 548, 520 574, 1000 556 L1000 640 L0 640 Z" fill="url(#sea)"/>
+    <g stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".35">
+      <path d="M80 590 h60"/><path d="M300 600 h90"/><path d="M620 585 h70"/><path d="M820 605 h60"/>
+    </g>
+    <!-- Végétation / sol -->
+    <path d="M0 620 C 220 600, 430 640, 640 618 S 900 600, 1000 612 L1000 900 L0 900 Z" fill="#4E9A67"/>
+    <path d="M0 700 C 260 670, 520 720, 1000 680 L1000 900 L0 900 Z" fill="#3F8560"/>
+
+    <!-- Maison arrière gauche : toit bleu -->
+    <g transform="translate(70 560)">
+      <rect x="20" y="70" width="230" height="120" fill="#F2F4F7"/>
+      <rect x="40" y="105" width="44" height="44" fill="#EEE414" opacity=".85"/>
+      <rect x="150" y="100" width="54" height="90" fill="#18243A" opacity=".85"/>
+      <path d="M0 78 L135 0 L270 78 Z" fill="url(#ribsBlue)"/>
+      <path d="M0 78 L135 0 L270 78" fill="none" stroke="#18243A" stroke-width="5" stroke-linejoin="round"/>
+    </g>
+
+    <!-- Palmier -->
+    <g transform="translate(900 520)">
+      <path d="M0 330 C -8 240, 10 150, -6 40" stroke="#6B4A2B" stroke-width="16" fill="none" stroke-linecap="round"/>
+      <g fill="#2F6B4F">
+        <path d="M-6 40 C -60 10, -120 30, -150 70 C -100 40, -50 45, -6 52 Z"/>
+        <path d="M-6 40 C 40 0, 110 10, 140 50 C 90 30, 40 35, -2 52 Z"/>
+        <path d="M-6 40 C -40 -20, -20 -70, 20 -90 C 0 -50, -2 -10, 4 40 Z"/>
+        <path d="M-6 40 C 30 -30, 90 -50, 120 -30 C 70 -20, 30 10, 0 46 Z"/>
+        <path d="M-6 40 C -60 -20, -110 -30, -140 -10 C -90 -8, -50 12, -10 48 Z"/>
+      </g>
+    </g>
+
+    <!-- Maison principale : toit en tôle rouge -->
+    <g transform="translate(330 470)">
+      <rect x="40" y="170" width="440" height="230" fill="#fff"/>
+      <rect x="40" y="170" width="440" height="16" fill="#18243A" opacity=".12"/>
+      <rect x="80" y="230" width="90" height="80" fill="#3A5EA8" opacity=".85"/>
+      <path d="M125 230 v80 M80 270 h90" stroke="#fff" stroke-width="5"/>
+      <rect x="350" y="230" width="90" height="80" fill="#3A5EA8" opacity=".85"/>
+      <path d="M395 230 v80 M350 270 h90" stroke="#fff" stroke-width="5"/>
+      <rect x="215" y="250" width="92" height="150" fill="#E51720"/>
+      <circle cx="290" cy="330" r="5" fill="#EEE414"/>
+      <!-- varangue -->
+      <rect x="20" y="392" width="480" height="14" fill="#18243A" opacity=".85"/>
+      <!-- toit -->
+      <path d="M-20 182 L260 0 L540 182 Z" fill="url(#ribsRed)"/>
+      <path d="M-20 182 L260 0 L540 182" fill="none" stroke="#18243A" stroke-width="7" stroke-linejoin="round"/>
+      <path d="M-20 182 H540" stroke="#9E0C14" stroke-width="6"/>
+      <!-- faîtage -->
+      <path d="M232 18 L260 0 L288 18" fill="none" stroke="#EEE414" stroke-width="8" stroke-linejoin="round"/>
+      <!-- lambrequin créole -->
+      <g fill="#fff">
+        <path d="M-10 186 h540 v10 h-540 Z"/>
+      </g>
+      <g fill="#fff">
+        <path d="M-6 196 q9 16 18 0 q9 16 18 0 q9 16 18 0 q9 16 18 0 q9 16 18 0 q9 16 18 0 q9 16 18 0 q9 16 18 0 q9 16 18 0 q9 16 18 0 q9 16 18 0 q9 16 18 0 q9 16 18 0 q9 16 18 0 q9 16 18 0 q9 16 18 0 q9 16 18 0 q9 16 18 0 q9 16 18 0 q9 16 18 0 q9 16 18 0 q9 16 18 0 q9 16 18 0 q9 16 18 0 q9 16 18 0 q9 16 18 0 q9 16 18 0 q9 16 18 0 q9 16 18 0 q9 16 18 0 Z"/>
+      </g>
+    </g>
+
+    <!-- Bandes diagonales de la charte -->
+    <g transform="translate(0 820)">
+      <path d="M0 0 H420 L380 80 H0 Z" fill="#3A5EA8"/>
+      <path d="M430 0 H760 L720 80 H390 Z" fill="#E51720"/>
+      <path d="M770 0 H1000 V80 H730 Z" fill="#EEE414"/>
+    </g>
+  </g>
+</svg>

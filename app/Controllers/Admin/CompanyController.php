@@ -160,6 +160,8 @@ final class CompanyController extends AdminController
         $partnerSetting = Setting::first(['key' => 'branding.partner_logo_ids']) ?? new Setting();
         $partnerSetting->fill(['key' => 'branding.partner_logo_ids', 'value' => json_encode($partnerIds), 'autoload' => 1])->save();
 
+        $this->saveSmtp($request);
+
         $mailHtmlInput = trim((string) $request->input('mail_notification_html', ''));
         if ($mailHtmlInput !== '') {
             $mailHtmlSetting = Setting::first(['key' => 'mail.notification_html']) ?? new Setting();
@@ -174,10 +176,30 @@ final class CompanyController extends AdminController
         return Response::redirect('/admin/company');
     }
 
+    private function saveSmtp(Request $request): void
+    {
+        if ($request->input('smtp_host') === null) {
+            return;
+        }
+        \App\Services\Mail\MailSettings::save([
+            'host' => $request->input('smtp_host', ''),
+            'port' => $request->input('smtp_port', ''),
+            'encryption' => $request->input('smtp_encryption', 'tls'),
+            'username' => $request->input('smtp_username', ''),
+            'password' => $request->input('smtp_password', ''),
+            'from_address' => $request->input('smtp_from_address', ''),
+            'from_name' => $request->input('smtp_from_name', ''),
+            'reply_to' => $request->input('smtp_reply_to', ''),
+        ]);
+    }
+
     public function testEmail(Request $request): Response
     {
+        if ($request->input('smtp_host') !== null) {
+            $this->saveSmtp($request);
+        }
         $company = Company::current();
-        $recipient = $company?->getAttribute('public_email') ?: config('mail.from.address', '');
+        $recipient = $company?->getAttribute('leads_email') ?: ($company?->getAttribute('public_email') ?: \App\Services\Mail\MailSettings::resolved()['from_address']);
         
         $mailHtmlSetting = trim((string) $request->input('mail_notification_html', ''));
         if (!$mailHtmlSetting) {

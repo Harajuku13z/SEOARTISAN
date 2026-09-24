@@ -4,13 +4,16 @@ $name=(string)($company?->getAttribute('trade_name')?:config('app.name','Votre a
 $phone=(string)($company?->getAttribute('phone')??'');$phoneHref=preg_replace('/\D+/','',$phone);
 $email=(string)($company?->getAttribute('public_email')??'');
 $city=(string)($company?->getAttribute('city')??'');
-$h1=(string)($page->getAttribute('h1')?:('Expert en rénovation et entretien de votre habitat'.($city!==''?' en Île-de-France':'')));
+$region=(string)($company?->getAttribute('region')??'');$department=(string)($company?->getAttribute('department')??'');
+$h1=(string)($page->getAttribute('h1')?:('Expert en rénovation et entretien de votre habitat'.($region!==''?' en '.$region:'')));
 $intro=(string)($company?->getAttribute('short_description')?:'Une expertise locale et des interventions soignées pour tous vos projets.');
 $aboutText=(string)($company->getAttribute('long_description') ?: $company->getAttribute('editorial_presentation') ?: $intro);
 $hero=$company?->getAttribute('hero_media_id')?Media::find((int)$company->getAttribute('hero_media_id'))?->getAttribute('url'):null;
 $mediaUrl=static fn($id)=>$id?Media::find((int)$id)?->getAttribute('url'):null;
 $legacyHero=null;foreach(Media::where(['url'=>'/uploads/homepage/a-propos.jpeg']) as $m){$legacyHero=$m->getAttribute('url');break;}
-$aboutImage=$legacyHero!==null?$legacyHero:$hero;
+$aboutImage=$legacyHero!==null?$legacyHero:$hero;$aboutIsLogo=false;
+$aboutMediaId=(int)(json_decode((string)(Setting::first(['key'=>'content.home_about_media_id'])?->getAttribute('value')??'0'),true)?:0);
+if($aboutMediaId&&($aboutMedia=Media::find($aboutMediaId))){$aboutImage=$aboutMedia->getAttribute('url');$aboutIsLogo=$aboutMedia->getAttribute('type')==='logo';}
 $services=array_values(array_filter(CompanyService::all('sort_order ASC'),static fn($service)=>(bool)$service->getAttribute('is_active')));
 $projects=array_slice(Project::visible(),0,3);
 $allReviews=Testimonial::visible();
@@ -28,6 +31,9 @@ if($years!==null&&$years>0)$stats[]=['value'=>$years.'+','label'=>'ans d\'expér
 if((int)$radius>0)$stats[]=['value'=>(int)$radius.' km','label'=>'de rayon d\'intervention'];
 if($certifications)$stats[]=['value'=>(string)$certifications[0],'label'=>'artisan qualifié'];
 if($average!==null)$stats[]=['value'=>number_format($average,1,',',' ').'/5','label'=>'avis clients Google'];
+$badges=array_values(array_filter((array)($copy['badges']??[]),'is_array'));
+$badgeIcons=['shield'=>'<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/>','home'=>'<path d="M3 11 12 3l9 8"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/>','clock'=>'<circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2"/><path d="M9 2h6"/>','pin'=>'<path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="3"/>'];
+$h1Html=preg_replace('/\*(.+?)\*/u','<span class="hart-hl">$1</span>',e($h1));
 $postImage=static fn(array $post):?string=>is_string($post['_embedded']['wp:featuredmedia'][0]['source_url']??null)?$post['_embedded']['wp:featuredmedia'][0]['source_url']:null;
 ?>
 <main class="jt-home">
@@ -38,7 +44,7 @@ $postImage=static fn(array $post):?string=>is_string($post['_embedded']['wp:feat
         <?php if($average!==null): ?>
         <span class="jt-rating-chip"><span class="jt-stars" aria-hidden="true">★★★★★</span><b><?= e(number_format($average,1,',','')) ?>/5</b><small><?= $googleCount>0?'· '.$googleCount.' avis Google':'· avis clients' ?></small></span>
         <?php endif; ?>
-        <h1><?= e($h1) ?></h1>
+        <h1><?= $h1Html ?></h1>
         <p class="jt-hero-sub"><?= e($intro) ?></p>
         <div class="jt-hero-actions">
           <a class="jt-btn jt-btn-primary" href="#devis">Demander un devis gratuit</a>
@@ -49,7 +55,7 @@ $postImage=static fn(array $post):?string=>is_string($post['_embedded']['wp:feat
         <ul class="jt-hero-trust">
           <li><span aria-hidden="true">✓</span>Devis gratuit &amp; sans engagement</li>
           <?php if($company?->getAttribute('offers_emergency')): ?><li><span aria-hidden="true">✓</span>Intervention rapide</li><?php endif; ?>
-          <?php if($city!==''): ?><li><span aria-hidden="true">✓</span>Artisan local à <?= e($city) ?></li><?php endif; ?>
+          <?php if($city!==''): ?><li><span aria-hidden="true">✓</span><?= e($copy['hero_local']??('Artisan local à '.$city)) ?></li><?php endif; ?>
         </ul>
       </div>
       <div class="jt-hero-visual">
@@ -73,6 +79,14 @@ $postImage=static fn(array $post):?string=>is_string($post['_embedded']['wp:feat
     <?php endif; ?>
   </section>
 
+  <?php if($badges): ?>
+  <section class="hart-badges" aria-label="Nos engagements">
+    <div class="jt-wrap"><ul>
+      <?php foreach($badges as $badge): ?><li><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><?= $badgeIcons[$badge['icon']??'']??$badgeIcons['shield'] ?></svg></span><span><strong><?= e($badge['title']??'') ?></strong><small><?= e($badge['text']??'') ?></small></span></li><?php endforeach; ?>
+    </ul></div>
+  </section>
+  <?php endif; ?>
+
   <?php if($services): ?>
   <section class="jt-section jt-services" id="services">
     <div class="jt-wrap">
@@ -81,7 +95,7 @@ $postImage=static fn(array $post):?string=>is_string($post['_embedded']['wp:feat
           <span class="jt-eyebrow"><?= e($copy['services_eyebrow']) ?></span>
           <h2><?= e($copy['services_title']) ?></h2>
         </div>
-        <p>Un seul interlocuteur pour l'entretien comme pour la rénovation, du diagnostic à la finition.</p>
+        <p><?= e($copy['services_text']??'Un seul interlocuteur pour l\'entretien comme pour la rénovation, du diagnostic à la finition.') ?></p>
       </div>
       <div class="jt-bento">
         <?php foreach($services as $index=>$service):$image=$mediaUrl($service->getAttribute('image_media_id')); ?>
@@ -101,15 +115,13 @@ $postImage=static fn(array $post):?string=>is_string($post['_embedded']['wp:feat
 
   <section class="jt-section jt-about" id="a-propos">
     <div class="jt-wrap jt-about-grid">
-      <div class="jt-about-visual"><?php if($aboutImage): ?><img src="<?= e($aboutImage) ?>" alt="<?= e($name) ?> en intervention" loading="lazy"><?php endif; ?><span class="jt-about-badge"><strong><?= e($name) ?></strong><small><?= $city!==''?e($city).' · ':'' ?>Val-d'Oise</small></span></div>
+      <div class="jt-about-visual"><?php if($aboutImage): ?><img<?= $aboutIsLogo?' class="hart-about-logo"':'' ?> src="<?= e($aboutImage) ?>" alt="<?= e($aboutIsLogo?'Logo '.$name:$name.' en intervention') ?>" loading="lazy"><?php endif; ?><span class="jt-about-badge"><strong><?= e($name) ?></strong><small><?= e(implode(' · ',array_unique(array_filter([$city,$department?:$region])))) ?></small></span></div>
       <div class="jt-about-copy">
         <span class="jt-eyebrow"><?= e($copy['about_eyebrow']) ?></span>
         <h2><?= e($copy['about_title']) ?></h2>
         <p><?= nl2br(e($aboutText)) ?></p>
         <ul class="jt-checklist">
-          <li><span aria-hidden="true">✓</span>Une réponse claire et rapide</li>
-          <li><span aria-hidden="true">✓</span>Un devis gratuit et transparent</li>
-          <li><span aria-hidden="true">✓</span>Un chantier propre et sécurisé</li>
+          <?php foreach((array)($copy['about_points']??['Une réponse claire et rapide','Un devis gratuit et transparent','Un chantier propre et sécurisé']) as $point): ?><li><span aria-hidden="true">✓</span><?= e($point) ?></li><?php endforeach; ?>
         </ul>
         <a class="jt-link-more" href="/a-propos">Découvrir l'entreprise<span aria-hidden="true"> →</span></a>
       </div>
@@ -150,8 +162,8 @@ $postImage=static fn(array $post):?string=>is_string($post['_embedded']['wp:feat
     <div class="jt-wrap">
       <div class="jt-section-head">
         <div>
-          <span class="jt-eyebrow">Nos secteurs d'intervention</span>
-          <h2>Un couvreur près de chez vous, dans tout le Val-d'Oise</h2>
+          <span class="jt-eyebrow"><?= e($copy['sectors_eyebrow']??'Nos secteurs d\'intervention') ?></span>
+          <h2><?= e($copy['sectors_title']??('Un artisan près de chez vous'.(($department?:$region)!==''?', partout en '.($department?:$region):''))) ?></h2>
         </div>
         <p>Découvrez nos interventions commune par commune et demandez votre devis gratuit en ligne.</p>
       </div>

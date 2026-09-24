@@ -150,7 +150,7 @@ final class Migrator
 
         foreach ($this->applicationTableNames() as $table) {
             $sql = preg_replace(
-                '/(?<![A-Za-z0-9_])`?' . preg_quote($table, '/') . '`?(?![A-Za-z0-9_])/',
+                '/(?<![A-Za-z0-9_\'])`?' . preg_quote($table, '/') . '`?(?![A-Za-z0-9_\'])/',
                 '`' . $prefix . $table . '`',
                 $sql
             ) ?? $sql;

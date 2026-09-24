@@ -10,7 +10,7 @@ return [
     'debug' => (bool) Env::get('APP_DEBUG', false),
     'url' => rtrim((string) Env::get('APP_URL', 'http://localhost'), '/'),
     'key' => Env::get('APP_KEY', ''),
-    'timezone' => 'Europe/Paris',
+    'timezone' => Env::get('APP_TIMEZONE', 'Europe/Paris'),
     'locale' => 'fr',
 
     'paths' => [

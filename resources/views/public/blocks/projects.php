@@ -58,7 +58,7 @@ if ($pairs === [] && $singles === [] && $videos === []) return;
   <div class="container">
     <span class="eyebrow">Réalisations</span>
     <h2>Nos derniers chantiers</h2>
-    <p class="realisation-section-intro">Découvrez nos installations et interventions réalisées chez nos clients.</p>
+    <p class="realisation-section-intro">Découvrez les chantiers réalisés chez nos clients.</p>
     <?php if ($pairs !== []): ?>
       <div class="services-grid" style="grid-template-columns:repeat(auto-fit,minmax(320px,1fr));margin-top:24px">
         <?php foreach ($pairs as $pair): ?>

@@ -7,8 +7,8 @@ if ($items === []) {
 ?>
 <section class="section" id="faq">
   <div class="container" style="max-width:820px">
-    <span class="eyebrow">Questions frequentes</span>
-    <h2 style="margin-bottom:24px">Vous vous demandez peut-etre...</h2>
+    <span class="eyebrow">Questions fréquentes</span>
+    <h2 style="margin-bottom:24px">Vous vous demandez peut-être…</h2>
     <div class="faq-list">
       <?php foreach ($items as $item): if (empty($item['question'])) continue; ?>
         <details class="faq-item">

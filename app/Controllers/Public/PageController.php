@@ -51,7 +51,12 @@ final class PageController
             'latestBlogPosts' => $latestBlogPosts,
         ]);
 
-        return Response::html(view_layout('public.layouts.main', 'public.pages.home_modern', $data));
+        $template = (string) (json_decode((string) (\App\Models\Setting::first(['key' => 'visual.home_template'])?->getAttribute('value') ?? '""'), true) ?: '');
+        $view = preg_match('/^home_[a-z0-9_]{1,40}$/', $template) && is_file(resource_path('views/public/pages/' . $template . '.php'))
+            ? 'public.pages.' . $template
+            : 'public.pages.home_modern';
+
+        return Response::html(view_layout('public.layouts.main', $view, $data));
     }
 
     public function bySlug(Request $request, array $params): Response
@@ -106,7 +111,7 @@ final class PageController
                 ? 'public.pages.realisations'
                 : ($slug === 'a-propos'
                     ? 'public.pages.about'
-                    : (($hasDomainServices || $isMenuGroup) ? 'public.pages.category' : ($page->getAttribute('type') === 'service' ? 'public.pages.service' : 'public.pages.generic'))));
+                    : (($hasDomainServices || $isMenuGroup) ? 'public.pages.category' : ($page->getAttribute('type') === 'service' ? 'public.pages.service' : ($page->getAttribute('type') === 'local' && is_file(resource_path('views/public/pages/local_landing.php')) ? 'public.pages.local_landing' : 'public.pages.generic')))));
         return Response::html(view_layout('public.layouts.main', $view, $data));
     }
 

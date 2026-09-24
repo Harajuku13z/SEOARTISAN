@@ -48,14 +48,14 @@ $footerCategories = !empty($siteMenu) ? $siteMenu : ($menuServices ?? []);
     </div>
   </div>
   <div class="container footer-bottom">
-    <span>&copy; <?= e($year) ?> <?= e($name) ?> - Tous droits reserves</span>
+    <span>&copy; <?= e($year) ?> <?= e($name) ?> - Tous droits réservés</span>
     <?php $visitsCounterOn = (bool) (new \App\Repositories\SettingsRepository(\App\Core\Database::instance()))->get('visits.public_counter', true); ?>
     <?php if ($visitsCounterOn): ?>
     <span id="visit-counter" data-offset-key="visits.counter_offset" hidden></span>
     <?php endif; ?>
-    <div style="display:flex;gap:16px">
-      <a href="/mentions-legales">Mentions legales</a>
-      <a href="/politique-confidentialite">Confidentialite</a>
+    <div style="display:flex;flex-wrap:wrap;gap:8px 16px">
+      <a href="/mentions-legales">Mentions légales</a>
+      <a href="/politique-confidentialite">Confidentialité</a>
       <a href="/politique-cookies">Cookies</a>
     </div>
   </div>

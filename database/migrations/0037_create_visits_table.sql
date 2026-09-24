@@ -1,5 +1,5 @@
 -- Suivi de visites avec classification des robots (humains / moteurs / IA / social / outils)
-CREATE TABLE IF NOT EXISTS artisan_visits (
+CREATE TABLE IF NOT EXISTS visits (
   id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   visited_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   path VARCHAR(500) NOT NULL DEFAULT '/',

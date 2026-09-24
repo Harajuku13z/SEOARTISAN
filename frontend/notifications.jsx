@@ -15,11 +15,12 @@ function scrollToQuote() {
   }, 650);
 }
 function QuoteInvitation({ toastId }) {
+  const invite = window.__siteInvite || {};
   return <div className="ets-toast" role="status"><div className="ets-toast__accent"/><div className="ets-toast__body">
     <button className="ets-toast__close" type="button" aria-label="Fermer" onClick={() => toast.dismiss(toastId)}>×</button>
-    <span className="ets-toast__label">Devis gratuit · Jura & Rhône</span><h2 className="ets-toast__title">Un projet de toiture ou de façade ?</h2>
-    <p className="ets-toast__text">Décrivez votre besoin en quelques instants. ETS Guillaume vous rappelle rapidement.</p>
-    <div className="ets-toast__actions"><button className="ets-toast__action" type="button" onClick={scrollToQuote}>Demander mon devis</button><a className="ets-toast__phone" href="tel:+33698678803">Appeler maintenant</a></div>
+    <span className="ets-toast__label">{invite.label || 'Devis gratuit'}</span><h2 className="ets-toast__title">{invite.title || 'Un projet en tête ?'}</h2>
+    <p className="ets-toast__text">{invite.text || 'Décrivez votre besoin en quelques instants. Nous vous rappelons rapidement.'}</p>
+    <div className="ets-toast__actions"><button className="ets-toast__action" type="button" onClick={scrollToQuote}>Demander mon devis</button>{invite.phone ? <a className="ets-toast__phone" href={'tel:' + invite.phone}>Appeler maintenant</a> : null}</div>
   </div></div>;
 }
 function Notifications() {

@@ -113,6 +113,23 @@ $preview = static function (?\App\Models\Media $media, string $alt, bool $wide =
         <div><label for="public_email">E-mail public (Contact)</label><input type="email" id="public_email" name="public_email" value="<?= $val('public_email') ?>"></div>
         <div><label for="leads_email">E-mail de reception des prospects</label><input type="email" id="leads_email" name="leads_email" value="<?= $val('leads_email') ?>"></div>
       </div>
+      <?php $smtp = \App\Services\Mail\MailSettings::forForm(); ?>
+      <h3 style="margin:18px 0 6px;font-size:15px">Serveur d’envoi (SMTP)</h3>
+      <p style="margin:0 0 12px;color:#64748b;font-size:13px">Utilisé pour les notifications de devis et l’accusé de réception envoyé au client. Hostinger : <code>smtp.hostinger.com</code>, port 465 (SSL) ou 587 (TLS).</p>
+      <div class="row">
+        <div><label for="smtp_host">Serveur SMTP</label><input id="smtp_host" name="smtp_host" value="<?= e($smtp['host']) ?>" placeholder="smtp.hostinger.com" autocomplete="off"></div>
+        <div><label for="smtp_port">Port</label><input type="number" id="smtp_port" name="smtp_port" value="<?= e((string) $smtp['port']) ?>" min="1" max="65535"></div>
+        <div><label for="smtp_encryption">Sécurité</label><select id="smtp_encryption" name="smtp_encryption"><option value="ssl"<?= $smtp['encryption']==='ssl'?' selected':'' ?>>SSL (port 465)</option><option value="tls"<?= $smtp['encryption']!=='ssl'?' selected':'' ?>>TLS / STARTTLS (port 587)</option></select></div>
+      </div>
+      <div class="row">
+        <div><label for="smtp_username">Identifiant (adresse e-mail)</label><input id="smtp_username" name="smtp_username" value="<?= e($smtp['username']) ?>" autocomplete="off"></div>
+        <div><label for="smtp_password">Mot de passe</label><input type="password" id="smtp_password" name="smtp_password" value="" autocomplete="new-password" placeholder="<?= $smtp['has_password'] ? '•••••••• (enregistré — laisser vide pour conserver)' : '' ?>"></div>
+      </div>
+      <div class="row">
+        <div><label for="smtp_from_address">Adresse d’expédition</label><input type="email" id="smtp_from_address" name="smtp_from_address" value="<?= e($smtp['from_address']) ?>"></div>
+        <div><label for="smtp_from_name">Nom d’expéditeur</label><input id="smtp_from_name" name="smtp_from_name" value="<?= e($smtp['from_name']) ?>"></div>
+        <div><label for="smtp_reply_to">Adresse de réponse (facultatif)</label><input type="email" id="smtp_reply_to" name="smtp_reply_to" value="<?= e($smtp['reply_to']) ?>"></div>
+      </div>
       <div style="margin-bottom: 12px;">
         <label for="mail_notification_html">Code HTML de l'e-mail de notification (Variables: {{type}}, {{lead_id}}, {{table}}, {{admin_link}})</label>
         <textarea id="mail_notification_html" name="mail_notification_html" rows="15" style="font-family:monospace; font-size:12px; white-space:pre-wrap; width: 100%;"><?= e($mailHtml ?? '') ?></textarea>

@@ -104,6 +104,6 @@ $router->group(['middleware' => [CsrfMiddleware::class, RateLimitMiddleware::cla
     $router->post('/devis', [FormController::class, 'quote']);
     $router->post('/contact', [FormController::class, 'contact']);
 });
-$router->group(['middleware' => [CsrfMiddleware::class, RateLimitMiddleware::class . ':tracking,120,60']], function ($router) {
+$router->group(['middleware' => [RateLimitMiddleware::class . ':tracking,120,60']], function ($router) {
     $router->post('/track/event', [TrackingController::class, 'event']);
 });

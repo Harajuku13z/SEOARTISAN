@@ -9,6 +9,7 @@ Options -Indexes
     RewriteRule ^uploads/(.*)$ public/uploads/$1 [L]
     RewriteRule ^sitemap\.xml$ public/sitemap.xml [L]
     RewriteRule ^favicon\.ico$ public/favicon.ico [L]
+    RewriteRule ^apple-touch-icon\.png$ public/apple-touch-icon.png [L]
     RewriteRule ^wordpress(?:/|$) - [L]
 
     # ACME/OVH validation files must remain directly reachable.
@@ -20,8 +21,8 @@ Options -Indexes
     RewriteRule ^legal/cgv/?$ /conditions-generales-vente [R=301,L]
 
     # Never expose application source or configuration files.
-    RewriteRule ^(?:app|config|database|resources|routes|scripts|storage|vendor)(?:/|$) - [F,L,NC]
-    RewriteRule ^(?:bootstrap\.php|composer\.(?:json|lock)|\.env(?:\.example)?|README\.md|phpunit\.xml)$ - [F,L,NC]
+    RewriteRule ^(?:app|config|content|database|frontend|node_modules|resources|routes|scripts|storage|tests|vendor)(?:/|$) - [F,L,NC]
+    RewriteRule ^(?:bootstrap\.php|composer\.(?:json|lock)|package(?:-lock)?\.json|\.env(?:\.example)?|README\.md|phpunit\.xml)$ - [F,L,NC]
 
     RewriteRule ^ public/index.php [L,QSA]
 </IfModule>

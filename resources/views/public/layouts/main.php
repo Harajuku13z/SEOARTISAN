@@ -21,6 +21,8 @@ $themePresetRow=\App\Models\Setting::first(['key'=>'visual.theme_preset']);
 $themePreset=$themePresetRow?trim((string)(json_decode((string)$themePresetRow->getAttribute('value'),true)?:'')):'';
 $themePreset=preg_match('/^[a-z0-9-]{1,60}$/',$themePreset)?$themePreset:'';
 $brandFonts=['Archivo'];
+foreach(['font_primary','font_secondary'] as $fontField){$fontName=trim((string)($company?->getAttribute($fontField)??''));if($fontName!==''&&preg_match('/^[A-Za-z0-9 ]{2,40}$/',$fontName))$brandFonts[]=str_replace(' ','+',$fontName);}
+$brandFonts=array_values(array_unique($brandFonts));
 ?>
 <!doctype html>
 <html lang="<?= e(config('app.locale')) ?>">
@@ -41,14 +43,17 @@ $brandFonts=['Archivo'];
 <?php endif; ?>
 <?php if($trackingEnabled&&preg_match('/^(AW-\d+|G-[A-Z0-9]+)$/',$googleTagId)): ?><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('consent','default',{analytics_storage:'denied',ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied'});gtag('js',new Date());gtag('config',<?= json_encode($googleTagId) ?>);</script><script async src="https://www.googletagmanager.com/gtag/js?id=<?= e(rawurlencode($googleTagId)) ?>"></script><?php endif; ?>
 <script>window.__trackingConfig=<?= json_encode($trackingConfig,JSON_UNESCAPED_SLASHES) ?>;</script>
+<?php $inviteArea=trim((string)($company?->getAttribute('region')?:$company?->getAttribute('department')??''));$siteInvite=['label'=>'Devis gratuit'.($inviteArea!==''?' · '.$inviteArea:''),'title'=>'Un projet de toiture ?','text'=>'Décrivez votre besoin en quelques instants. '.$siteName.' vous rappelle rapidement.','phone'=>preg_replace('/[^\d+]/','',(string)($company?->getAttribute('phone')??''))]; ?><script>window.__siteInvite=<?= json_encode($siteInvite,JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE|JSON_HEX_TAG) ?>;</script>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Public+Sans:wght@400;500;600&family=<?= e(implode('&', array_map(static fn ($f) => 'family=' . $f . ':wght@400;600;700;800', $brandFonts))) ?>&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Public+Sans:wght@400;500;600&<?= e(implode('&', array_map(static fn ($f) => 'family=' . $f . ':wght@400;600;700;800', $brandFonts))) ?>&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/theme.css?v=20260825-1">
 <link rel="stylesheet" href="/assets/css/professional.css?v=20260824-5">
 <link rel="stylesheet" href="/assets/css/ets-design-system.css?v=20260824-2">
-<link rel="stylesheet" href="/assets/js/notifications.css?v=20260824-1">
-<?php if ($themePreset !== ''): ?><link rel="stylesheet" href="/assets/css/presets/<?= e($themePreset) ?>.css?v=20260826-1"><?php endif; ?>
+<link rel="stylesheet" href="/assets/js/notifications.css?v=20260924-1">
+<?php if ($themePreset !== ''): ?><link rel="stylesheet" href="/assets/css/presets/<?= e($themePreset) ?>.css?v=20260924-5"><?php endif; ?>
 <?php if ($company): ?>
 <style>
   :root {
@@ -70,12 +75,14 @@ $brandFonts=['Archivo'];
 <?= view('public.partials.header', ['company' => $company, 'menuServices' => $menuServices, 'siteMenu' => $siteMenu ?? [], 'logoUrl' => $logoUrl ?? null]) ?>
 <?= $content ?>
 <?= view('public.partials.footer', ['company' => $company, 'menuServices' => $menuServices, 'siteMenu' => $siteMenu ?? [], 'logoUrl' => $logoUrl ?? null]) ?>
-<?php if ($company && !empty($company->getAttribute('whatsapp'))): ?>
-  <a class="whatsapp-fab" href="https://wa.me/<?= e(preg_replace('/\D/', '', (string) $company->getAttribute('whatsapp'))) ?>" target="_blank" rel="noopener" aria-label="Contacter sur WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.04 2a9.84 9.84 0 0 0-8.49 14.8L2 22l5.34-1.5A9.95 9.95 0 1 0 12.04 2Zm0 17.93a8.1 8.1 0 0 1-4.13-1.13l-.3-.18-3.17.89.85-3.09-.2-.32a8.08 8.08 0 1 1 6.95 3.83Zm4.43-6.06c-.24-.12-1.44-.71-1.66-.79-.22-.08-.38-.12-.54.12-.16.24-.63.79-.77.95-.14.16-.28.18-.52.06-.24-.12-1.02-.38-1.95-1.2a7.3 7.3 0 0 1-1.35-1.68c-.14-.24-.02-.37.1-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.3-.74-1.78-.2-.47-.4-.4-.54-.41h-.46c-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2s.86 2.32.98 2.48c.12.16 1.69 2.58 4.1 3.62.57.25 1.02.4 1.37.51.58.18 1.1.16 1.51.1.46-.07 1.44-.59 1.64-1.16.2-.57.2-1.06.14-1.16-.06-.1-.22-.16-.46-.28Z"/></svg></a>
+<?php $waNumber=preg_replace('/\D/','',(string)($company?->getAttribute('whatsapp')??''));if(str_starts_with($waNumber,'0'))$waNumber=(preg_match('/^0(69[23]|262)/',$waNumber)?'262':'33').substr($waNumber,1); ?>
+<?php if ($company && $waNumber !== ''): ?>
+  <a class="whatsapp-fab" href="https://wa.me/<?= e($waNumber) ?>" target="_blank" rel="noopener" aria-label="Contacter sur WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.04 2a9.84 9.84 0 0 0-8.49 14.8L2 22l5.34-1.5A9.95 9.95 0 1 0 12.04 2Zm0 17.93a8.1 8.1 0 0 1-4.13-1.13l-.3-.18-3.17.89.85-3.09-.2-.32a8.08 8.08 0 1 1 6.95 3.83Zm4.43-6.06c-.24-.12-1.44-.71-1.66-.79-.22-.08-.38-.12-.54.12-.16.24-.63.79-.77.95-.14.16-.28.18-.52.06-.24-.12-1.02-.38-1.95-1.2a7.3 7.3 0 0 1-1.35-1.68c-.14-.24-.02-.37.1-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.3-.74-1.78-.2-.47-.4-.4-.54-.41h-.46c-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2s.86 2.32.98 2.48c.12.16 1.69 2.58 4.1 3.62.57.25 1.02.4 1.37.51.58.18 1.1.16 1.51.1.46-.07 1.44-.59 1.64-1.16.2-.57.2-1.06.14-1.16-.06-.1-.22-.16-.46-.28Z"/></svg></a>
 <?php endif; ?>
-<?php if($trackingEnabled): ?><div class="tracking-consent" data-tracking-consent hidden><div class="tracking-consent-copy"><strong>Gestion des cookies</strong><p>Nous utilisons des cookies nécessaires au fonctionnement du site et, avec votre accord, des cookies de mesure d’audience et de conversion pour améliorer nos services et comprendre les appels et demandes de devis.</p></div><div class="tracking-consent-actions"><button type="button" data-consent-accept>Tout accepter</button><button type="button" data-consent-refuse>Tout refuser</button><a href="/politique-cookies">En savoir plus</a></div></div><?php endif; ?>
+<?php if($trackingEnabled&&$googleTagId!==''): ?><div class="tracking-consent" data-tracking-consent hidden><div class="tracking-consent-copy"><strong>Gestion des cookies</strong><p>Nous utilisons des cookies nécessaires au fonctionnement du site et, avec votre accord, des cookies de mesure d’audience et de conversion pour améliorer nos services et comprendre les appels et demandes de devis.</p></div><div class="tracking-consent-actions"><button type="button" data-consent-accept>Tout accepter</button><button type="button" data-consent-refuse>Tout refuser</button><a href="/politique-cookies">En savoir plus</a></div></div><?php endif; ?>
+<?php if ($company && $company->getAttribute('phone')): ?><nav class="mobile-cta-bar" aria-label="Contact rapide"><a class="mcb-call" href="tel:<?= e(preg_replace('/\s+/', '', (string) $company->getAttribute('phone'))) ?>" data-track-label="Barre mobile — Appeler"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>Appeler</a><a class="mcb-quote" href="#devis">Devis gratuit</a></nav><?php endif; ?>
 <div id="sonner-root" aria-live="polite"></div>
-<script src="/assets/js/notifications.js?v=20260824-1" defer></script>
+<script src="/assets/js/notifications.js?v=20260924-1" defer></script>
 <script src="/assets/js/theme.js?v=20260824-4" defer></script>
 </body>
 </html>
