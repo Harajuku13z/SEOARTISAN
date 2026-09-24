@@ -5,6 +5,7 @@
  * @var array<string,string> $editorialFields
  * @var array<int,\App\Models\Media> $partnerLogos
  * @var array<string,\App\Models\Media|null> $visualMedia
+ * @var array<string,mixed> $smtp
  */
 $errors = flash_errors();
 $success = flash_message('success');
@@ -12,6 +13,9 @@ $dayLabels = ['lundi' => 'Lundi', 'mardi' => 'Mardi', 'mercredi' => 'Mercredi', 
 $hours = $company?->getAttribute('opening_hours') ?? [];
 $social = $company?->getAttribute('social_links') ?? [];
 $val = static fn (string $key) => e($company?->getAttribute($key));
+$canManageSmtp = isset($smtp);
+$smtp = $smtp ?? [];
+$smtpVal = static fn (string $key) => e((string) ($smtp[$key] ?? ''));
 $visualMedia = $visualMedia ?? [];
 foreach (['logo_main_media_id','logo_light_media_id','logo_dark_media_id','favicon_media_id','hero_media_id','hero_mobile_media_id','og_media_id'] as $field) {
     if (!array_key_exists($field, $visualMedia)) {
@@ -37,6 +41,7 @@ $preview = static function (?\App\Models\Media $media, string $alt, bool $wide =
   <nav class="company-settings-tabs" aria-label="Rubriques de l’entreprise">
     <button type="button" data-company-tab="identity">Identité</button>
     <button type="button" data-company-tab="emails">E-mails &amp; Notifications</button>
+    <?php if ($canManageSmtp): ?><button type="button" data-company-tab="smtp">Configuration SMTP</button><?php endif; ?>
     <button type="button" data-company-tab="contact">Contact &amp; horaires</button>
     <button type="button" data-company-tab="visual">Design &amp; images</button>
     <button type="button" data-company-tab="editorial">Contenu IA</button>
@@ -117,8 +122,58 @@ $preview = static function (?\App\Models\Media $media, string $alt, bool $wide =
         <label for="mail_notification_html">Code HTML de l'e-mail de notification (Variables: {{type}}, {{lead_id}}, {{table}}, {{admin_link}})</label>
         <textarea id="mail_notification_html" name="mail_notification_html" rows="15" style="font-family:monospace; font-size:12px; white-space:pre-wrap; width: 100%;"><?= e($mailHtml ?? '') ?></textarea>
       </div>
-      <button type="submit" formaction="/admin/company/test-email" class="btn alt" style="background:#f3f6f8;color:#294352;border:1px solid #dde3e8;padding:8px 16px;border-radius:6px;cursor:pointer;font-weight:600;">Tester l'envoi d'e-mail (sauvegarde et envoie un test)</button>
+      <button type="submit" formaction="/admin/company/test-email" class="btn alt" style="background:#f3f6f8;color:#294352;border:1px solid #dde3e8;padding:8px 16px;border-radius:6px;cursor:pointer;font-weight:600;">Envoyer un e-mail de test</button>
     </fieldset>
+
+    <?php if ($canManageSmtp): ?>
+    <fieldset class="fieldset company-settings-panel" data-company-panel="smtp">
+      <legend>Configuration SMTP</legend>
+      <?php if (!empty($smtp['configuration_error'])): ?><div class="alert error"><?= e($smtp['configuration_error']) ?></div><?php endif; ?>
+      <p>Renseignez les paramètres fournis par votre messagerie pour envoyer les e-mails du site.</p>
+      <div class="row">
+        <div>
+          <label for="smtp_host">Serveur SMTP</label>
+          <input type="text" id="smtp_host" name="smtp_host" form="smtp-settings-form" value="<?= $smtpVal('host') ?>" placeholder="ex : smtp.hostinger.com" autocapitalize="none" spellcheck="false" required>
+        </div>
+        <div>
+          <label for="smtp_port">Port</label>
+          <input type="number" id="smtp_port" name="smtp_port" form="smtp-settings-form" value="<?= $smtpVal('port') ?>" min="1" max="65535" placeholder="587" required>
+        </div>
+      </div>
+      <label for="smtp_encryption">Chiffrement</label>
+      <select id="smtp_encryption" name="smtp_encryption" form="smtp-settings-form" aria-describedby="smtp-encryption-help" required>
+        <option value="tls" <?= ($smtp['encryption'] ?? 'tls') === 'tls' ? 'selected' : '' ?>>STARTTLS (port 587 habituellement)</option>
+        <option value="ssl" <?= ($smtp['encryption'] ?? '') === 'ssl' ? 'selected' : '' ?>>TLS direct (port 465 habituellement)</option>
+      </select>
+      <p id="smtp-encryption-help"><small>STARTTLS sécurise la connexion après son ouverture, généralement sur le port 587. TLS direct chiffre la connexion dès son ouverture, généralement sur le port 465. Utilisez le couple port/chiffrement indiqué par votre fournisseur.</small></p>
+      <div class="row">
+        <div>
+          <label for="smtp_username">Identifiant SMTP</label>
+          <input type="text" id="smtp_username" name="smtp_username" form="smtp-settings-form" value="<?= $smtpVal('username') ?>" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="ex : contact@ets-guillaume-69.fr" required>
+        </div>
+        <div>
+          <label for="smtp_password">Mot de passe SMTP</label>
+          <input type="password" id="smtp_password" name="smtp_password" form="smtp-settings-form" autocomplete="new-password" aria-describedby="smtp-password-help" <?= empty($smtp['password_configured']) ? 'required' : '' ?>>
+          <small id="smtp-password-help"><?= !empty($smtp['password_configured']) ? 'Un mot de passe est déjà configuré. Laissez ce champ vide pour le conserver.' : 'Aucun mot de passe configuré. Renseignez le mot de passe de votre messagerie.' ?></small>
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <label for="smtp_from_address">Adresse e-mail de l’expéditeur</label>
+          <input type="email" id="smtp_from_address" name="smtp_from_address" form="smtp-settings-form" value="<?= $smtpVal('from_address') ?>" required>
+        </div>
+        <div>
+          <label for="smtp_from_name">Nom de l’expéditeur</label>
+          <input type="text" id="smtp_from_name" name="smtp_from_name" form="smtp-settings-form" value="<?= $smtpVal('from_name') ?>">
+        </div>
+      </div>
+      <label for="smtp_reply_to">Adresse de réponse (facultatif)</label>
+      <input type="email" id="smtp_reply_to" name="smtp_reply_to" form="smtp-settings-form" value="<?= $smtpVal('reply_to') ?>">
+      <div class="actions-bar">
+        <button type="submit" form="smtp-settings-form">Enregistrer la configuration SMTP</button>
+      </div>
+    </fieldset>
+    <?php endif; ?>
   </div>
 
   <div class="card">
@@ -174,10 +229,15 @@ $preview = static function (?\App\Models\Media $media, string $alt, bool $wide =
     </fieldset>
   </div>
 
-  <div class="actions-bar">
+  <div class="actions-bar" data-company-save>
     <button type="submit">Enregistrer</button>
   </div>
 </form>
+<?php if ($canManageSmtp): ?>
+<form id="smtp-settings-form" method="post" action="/admin/company/smtp">
+  <?= csrf_field() ?>
+</form>
+<?php endif; ?>
 <script>
 (() => {
   const form = document.querySelector('.company-settings-form');
@@ -185,6 +245,7 @@ $preview = static function (?\App\Models\Media $media, string $alt, bool $wide =
   const tabs = [...form.querySelectorAll('[data-company-tab]')];
   const panels = [...form.querySelectorAll('[data-company-panel]')];
   const cards = [...form.querySelectorAll('.card')];
+  const companySave = form.querySelector('[data-company-save]');
   const allowed = tabs.map(tab => tab.dataset.companyTab);
   const requested = location.hash.replace('#', '');
   const initial = allowed.includes(requested) ? requested : 'identity';
@@ -200,6 +261,10 @@ $preview = static function (?\App\Models\Media $media, string $alt, bool $wide =
       const cardPanels = [...card.querySelectorAll('[data-company-panel]')];
       card.hidden = cardPanels.length > 0 && cardPanels.every(panel => panel.hidden);
     });
+    if (companySave) {
+      companySave.hidden = section === 'smtp';
+      companySave.style.display = section === 'smtp' ? 'none' : '';
+    }
     history.replaceState(null, '', '#' + section);
     window.scrollTo({top: 0, behavior: 'smooth'});
   };

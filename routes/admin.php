@@ -54,6 +54,7 @@ $router->group(['prefix' => 'admin', 'middleware' => [AuthMiddleware::class, Csr
 
     $router->get('/company', [CompanyController::class, 'show']);
     $router->post('/company', [CompanyController::class, 'update']);
+    $router->post('/company/smtp', [CompanyController::class, 'updateSmtp']);
     $router->post('/company/test-email', [CompanyController::class, 'testEmail']);
     $router->get('/blog', [BlogController::class, 'show']);
     $router->post('/blog', [BlogController::class, 'save']);

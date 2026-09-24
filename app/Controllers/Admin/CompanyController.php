@@ -12,6 +12,8 @@ use App\Models\Company;
 use App\Models\Media;
 use App\Models\Setting;
 use App\Services\Media\MediaUploadService;
+use App\Services\Mail\SmtpSettings;
+use InvalidArgumentException;
 use Throwable;
 
 final class CompanyController extends AdminController
@@ -58,6 +60,9 @@ final class CompanyController extends AdminController
             'partnerLogos' => array_values(array_filter(array_map(static fn ($id) => Media::find((int)$id), $partnerIds))),
             'visualMedia' => $visualMedia,
             'mailHtml' => $mailHtml,
+            'smtp' => $this->canManageSmtp()
+                ? array_replace((new SmtpSettings())->forForm(), Session::getFlash('_smtp_input', []))
+                : null,
         ], 'company');
     }
 
@@ -174,10 +179,44 @@ final class CompanyController extends AdminController
         return Response::redirect('/admin/company');
     }
 
+    public function updateSmtp(Request $request): Response
+    {
+        if (!$this->canManageSmtp()) {
+            return Response::html('<h1>403</h1><p>Accès refusé.</p>', 403);
+        }
+
+        try {
+            \App\Core\Database::instance()->transaction(function () use ($request): void {
+                (new SmtpSettings())->save($request->all());
+                $this->log('company.smtp.update', null, null, 'Configuration SMTP mise à jour');
+            });
+            Session::flash('success', 'Configuration SMTP enregistrée. Les prochains e-mails utiliseront ces paramètres.');
+        } catch (Throwable $e) {
+            $safeInput = [];
+            foreach (['host', 'port', 'encryption', 'username', 'from_address', 'from_name', 'reply_to'] as $key) {
+                $value = $request->input('smtp_' . $key, '');
+                if (is_string($value)) {
+                    $safeInput[$key] = $value;
+                }
+            }
+            Session::flash('_smtp_input', $safeInput);
+            Session::flash('_errors', ['form' => $e instanceof InvalidArgumentException
+                ? $e->getMessage()
+                : 'Impossible d’enregistrer la configuration SMTP. Les paramètres précédents sont conservés.']);
+        }
+
+        return Response::redirect('/admin/company#smtp');
+    }
+
+    private function canManageSmtp(): bool
+    {
+        return in_array($this->auth->user()?->getAttribute('role'), ['super_admin', 'admin'], true);
+    }
+
     public function testEmail(Request $request): Response
     {
         $company = Company::current();
-        $recipient = $company?->getAttribute('public_email') ?: config('mail.from.address', '');
+        $recipient = $company?->getAttribute('public_email');
         
         $mailHtmlSetting = trim((string) $request->input('mail_notification_html', ''));
         if (!$mailHtmlSetting) {
@@ -194,6 +233,7 @@ final class CompanyController extends AdminController
         );
 
         try {
+            $recipient = $recipient ?: (new SmtpSettings())->current()['from_address'];
             (new \App\Services\Mail\SmtpMailer())->sendHtml((string)$recipient, 'Test de notification - '.(string)config('app.name'), $html);
             Session::flash('success', 'E-mail de test envoyé à ' . $recipient . ' !');
         } catch (\Throwable $e) {
