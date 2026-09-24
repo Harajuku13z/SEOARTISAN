@@ -156,8 +156,8 @@ $companyId = (int) $company->id();
 /* ------------------------------------------------------------------ */
 $services = [
     [
-        'slug' => 'recherche-fuite-et-urgence', 'name' => 'Recherche de fuite et urgence', 'photo' => 'mise-hors-d-eau-bache-urgence',
-        'photo_alt' => 'Mise hors d’eau d’urgence par bâchage sur une toiture à La Réunion',
+        'slug' => 'recherche-fuite-et-urgence', 'name' => 'Recherche de fuite et urgence', 'photo' => 'fuite-infiltration-plafond',
+        'photo_alt' => 'Infiltration d’eau au plafond causée par une fuite de toiture à La Réunion',
         'description' => 'Détection rapide des fuites sur toitures en tôle et en dalle béton, mise en sécurité immédiate et interventions d’urgence 24 h/24.',
         'intro' => 'Une fuite d’eau provoque vite des dégâts importants. Nous commençons par une inspection visuelle pour repérer les infiltrations sur votre toiture en tôle ou en dalle de béton, puis nous vous expliquons clairement l’origine du problème.',
         'points' => ['Inspection visuelle des infiltrations, joints et raccords de tôle', 'Joint détérioré : remplacement de la visserie ou résine d’étanchéité avant mise en peinture', 'Raccord de tôle fragile : feuille d’étanchéité, première couche de résine, toile puis seconde couche', 'Intervention immédiate 24 h/24 pour sécuriser l’habitation et stopper temporairement la fuite', 'Diagnostic et conseil sur la réparation la plus durable'],

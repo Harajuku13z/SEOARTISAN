@@ -53,7 +53,7 @@ $brandFonts=array_values(array_unique($brandFonts));
 <link rel="stylesheet" href="/assets/css/professional.css?v=20260824-5">
 <link rel="stylesheet" href="/assets/css/ets-design-system.css?v=20260824-2">
 <link rel="stylesheet" href="/assets/js/notifications.css?v=20260924-1">
-<?php if ($themePreset !== ''): ?><link rel="stylesheet" href="/assets/css/presets/<?= e($themePreset) ?>.css?v=20260924-5"><?php endif; ?>
+<?php if ($themePreset !== ''): ?><link rel="stylesheet" href="/assets/css/presets/<?= e($themePreset) ?>.css?v=20260924-6"><?php endif; ?>
 <?php if ($company): ?>
 <style>
   :root {

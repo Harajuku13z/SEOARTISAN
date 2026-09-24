@@ -1065,3 +1065,34 @@ h1, h2, h3, h4,
   body { padding-bottom: 74px; }
   .whatsapp-fab { bottom: 86px !important; }
 }
+
+/* Cartes services de l'accueil : couleurs figées + survol soigné */
+.hh-service, .hh-service:hover, .hh-service:focus-visible { color: #fff !important; text-decoration: none; }
+.hh-service-body strong { color: #fff !important; transition: transform .35s cubic-bezier(.22, 1, .36, 1); }
+.hh-service-body small { color: #DCE3EE !important; transition: color .3s ease; }
+.hh-tag { color: #fff !important; }
+.hh-service { transition: transform .35s cubic-bezier(.22, 1, .36, 1), box-shadow .35s ease; }
+.hh-service:hover { transform: translateY(-6px); box-shadow: 0 24px 50px rgba(24, 36, 58, .28); }
+.hh-service::before { transition: opacity .35s ease, background .35s ease; }
+.hh-service:hover::before { background: linear-gradient(0deg, rgba(24, 36, 58, .97) 0%, rgba(24, 36, 58, .72) 55%, rgba(24, 36, 58, .25) 100%); }
+.hh-service:hover .hh-service-body strong { transform: translateY(-3px); }
+.hh-service:hover .hh-service-body small { color: #fff !important; }
+.hh-service-body b { position: relative; align-self: flex-start; padding-bottom: 6px; color: var(--hart-yellow) !important; }
+.hh-service-body b::after { content: ''; position: absolute; left: 0; bottom: 0; height: 3px; width: 0; background: var(--hart-yellow); transition: width .35s cubic-bezier(.22, 1, .36, 1); }
+.hh-service:hover .hh-service-body b::after { width: 100%; }
+.hh-service::after { transition: height .3s ease; }
+.hh-service:hover::after { height: 8px; }
+.hh-service:focus-visible { outline: 3px solid var(--hart-yellow); outline-offset: 3px; }
+
+/* Autres cartes-liens : pas de texte rouge hérité au survol */
+.hh-post:hover, .hh-post:hover strong { color: var(--hart-night) !important; }
+.hh-post:hover b { color: var(--hart-red) !important; }
+.hh-btn:hover { text-decoration: none; }
+.hh-btn-red:hover, .hh-btn-red:focus { color: #fff !important; background: #C8111A; }
+.hh-btn-yellow:hover, .hh-btn-yellow:focus { color: var(--hart-night) !important; background: #F6EE4A; }
+.hh-btn-white:hover { color: var(--hart-night) !important; }
+.hh-hero-card a:hover { color: #fff !important; filter: brightness(1.08); }
+.ll-call:hover { color: var(--hart-night) !important; } .ll-quote:hover { color: #fff !important; }
+.hb-btn-red:hover { color: #fff !important; } .hb-btn-yellow:hover { color: var(--hart-night) !important; }
+.mcb-call:hover { color: #fff !important; } .mcb-quote:hover { color: var(--hart-night) !important; }
+@media (prefers-reduced-motion: reduce) { .hh-service, .hh-service-body strong, .hh-service img { transition: none; } .hh-service:hover { transform: none; } }
