@@ -22,7 +22,7 @@ $fr=static fn(?int $t):string=>$t?date('j',$t).' '.$months[(int)date('n',$t)-1].
       <header class="hb-head">
         <span class="hh-kicker">Conseils toiture · La Réunion</span>
         <h1><?= e($title) ?></h1>
-        <p class="hb-meta">Par <strong>Guy Hart</strong>, couvreur depuis 30 ans · <time datetime="<?= e((string)($post['date']??'')) ?>"><?= e($fr($published)) ?></time><?php if($modified&&$published&&date('Y-m-d',$modified)!==date('Y-m-d',$published)): ?> · mis à jour le <time datetime="<?= e((string)$post['modified']) ?>"><?= e($fr($modified)) ?></time><?php endif; ?> · <?= $minutes ?> min de lecture</p>
+        <p class="hb-meta">Par <strong>Guy Hart</strong>, artisan couvreur · <time datetime="<?= e((string)($post['date']??'')) ?>"><?= e($fr($published)) ?></time><?php if($modified&&$published&&date('Y-m-d',$modified)!==date('Y-m-d',$published)): ?> · mis à jour le <time datetime="<?= e((string)$post['modified']) ?>"><?= e($fr($modified)) ?></time><?php endif; ?> · <?= $minutes ?> min de lecture</p>
       </header>
       <?php if($image): ?><img class="hb-hero" src="<?= e($image) ?>" alt="<?= e($imageAlt) ?>" fetchpriority="high"><?php endif; ?>
       <?php if(count($toc)>=3): ?>
@@ -31,7 +31,7 @@ $fr=static fn(?int $t):string=>$t?date('j',$t).' '.$months[(int)date('n',$t)-1].
       <div class="wp-article-content hb-content"><?= $content ?></div>
       <aside class="hb-author">
         <img src="/assets/images/hart/icon-512.png" alt="" width="64" height="64">
-        <div><strong>Guy Hart — fondateur de <?= e($blogName) ?></strong><p>Installé à La Réunion depuis l’enfance, Guy Hart cumule trente ans d’expérience en toiture. Avec son équipe basée à Saint-Denis, il intervient sur toute l’île pour la recherche de fuite, la rénovation, le traitement antirouille, la peinture et l’étanchéité des toitures.</p></div>
+        <div><strong>Guy Hart — fondateur de <?= e($blogName) ?></strong><p>Installé à La Réunion depuis l’enfance, Guy Hart est un artisan couvreur expérimenté. Avec son équipe basée à Saint-Denis, il intervient sur toute l’île pour la recherche de fuite, la rénovation, le traitement antirouille, la peinture et l’étanchéité des toitures.</p></div>
       </aside>
     </article>
     <aside class="hb-sidebar" aria-label="Contact et services">

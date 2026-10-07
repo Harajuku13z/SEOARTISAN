@@ -20,6 +20,7 @@ $navigationServices = !empty($siteMenu) ? $siteMenu : ($menuServices ?? []);
       <?php foreach ($navigationServices as $item): ?><div class="mega-group"><button type="button" class="mega-title" aria-expanded="false"><?= e($item['label'] ?? $item['public_name'] ?? '') ?><span aria-hidden="true">+</span></button><div class="mega-children"><?php if (!empty($item['children'])): ?><a class="mega-category-link" href="<?= e($item['url'] ?? '/#services') ?>">Voir toute la catégorie →</a><?php endif; ?><?php foreach (($item['children'] ?? []) as $child): ?><a href="<?= e($child['url']) ?>"><?= e($child['label']) ?></a><?php endforeach; ?><?php if (empty($item['children']) && !empty($item['slug'])): ?><a href="/<?= e($item['slug']) ?>">Découvrir ce service →</a><?php endif; ?></div></div><?php endforeach; ?>
     </div></div>
     <a href="/realisations">Réalisations</a>
+    <a href="/tarifs">Tarifs</a>
     <a href="/a-propos">À propos</a>
     <a href="/blog">Blog</a>
     <a href="/contact">Contact</a>

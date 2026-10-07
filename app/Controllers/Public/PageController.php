@@ -111,7 +111,9 @@ final class PageController
                 ? 'public.pages.realisations'
                 : ($slug === 'a-propos'
                     ? 'public.pages.about'
-                    : (($hasDomainServices || $isMenuGroup) ? 'public.pages.category' : ($page->getAttribute('type') === 'service' ? 'public.pages.service' : ($page->getAttribute('type') === 'local' && is_file(resource_path('views/public/pages/local_landing.php')) ? 'public.pages.local_landing' : 'public.pages.generic')))));
+                    : (($slug === 'tarifs' || $slug === 'grille-tarifaire')
+                        ? 'public.pages.tarifs'
+                        : (($hasDomainServices || $isMenuGroup) ? 'public.pages.category' : ($page->getAttribute('type') === 'service' ? 'public.pages.service' : ($page->getAttribute('type') === 'local' && is_file(resource_path('views/public/pages/local_landing.php')) ? 'public.pages.local_landing' : 'public.pages.generic'))))));
         return Response::html(view_layout('public.layouts.main', $view, $data));
     }
 

@@ -105,10 +105,10 @@ $company = Company::current() ?? new Company();
 $company->fill([
     'business_category_id' => $category?->id(),
     'trade_name' => HART_NAME,
-    'legal_name' => 'HART TOITURE (entrepreneur individuel)',
+    'legal_name' => 'Jennifer BEAU (HART TOITURE)',
     'slogan' => 'Couverture · Rénovation · Étanchéité',
     'short_description' => 'Couvreur à Saint-Denis de La Réunion : recherche de fuite et urgence 24 h/24, réparation et rénovation de toiture, traitement antirouille, nettoyage, peinture et étanchéité. Déplacement et devis gratuits.',
-    'long_description' => "HART TOITURE protège les toitures de La Réunion en s’adaptant aux spécificités climatiques de l’île.\nFondée par M. Guy Hart, installé dans l’île depuis l’enfance et fort de trente ans d’expérience, l’entreprise a adapté des techniques éprouvées aux contraintes tropicales : soleil, fortes pluies, air salin et cyclones.\nAux côtés de Fabien, son collaborateur, il forme une équipe soudée dédiée à la rénovation et à l’étanchéité des toitures en tôle comme en dalle de béton. HART TOITURE intervient partout dans l’île, sans accueil en agence, pour rester au plus près de vos besoins.",
+    'long_description' => "HART TOITURE protège les toitures de La Réunion en s’adaptant aux spécificités climatiques de l’île.\nFondée par M. Guy Hart, artisan couvreur installé dans l’île depuis l’enfance, l’entreprise a adapté des techniques éprouvées aux contraintes tropicales : soleil, fortes pluies, air salin et cyclones.\nAux côtés de Fabien, son collaborateur, il forme une équipe soudée dédiée à la rénovation et à l’étanchéité des toitures en tôle comme en dalle de béton. HART TOITURE intervient partout dans l’île, sans accueil en agence, pour rester au plus près de vos besoins.",
     'phone' => HART_PHONE,
     'whatsapp' => HART_PHONE,
     'public_email' => HART_EMAIL,
@@ -119,7 +119,7 @@ $company->fill([
     'department' => 'La Réunion (974)',
     'region' => 'La Réunion',
     'siret' => '91215929000010',
-    'legal_info' => 'HART TOITURE — Entrepreneur individuel — RCS Saint-Denis-de-la-Réunion 912 159 290 — SIRET 912 159 290 00010 — TVA FR18912159290',
+    'legal_info' => 'HART TOITURE — Jennifer BEAU — Entrepreneur individuel — RCS Saint-Denis-de-la-Réunion 912 159 290 — SIRET 912 159 290 00010 — TVA FR18912159290',
     'certifications' => [],
     'social_links' => ['facebook' => HART_FACEBOOK],
     'opening_hours' => ['lundi' => '07:00-19:00', 'mardi' => '07:00-19:00', 'mercredi' => '07:00-19:00', 'jeudi' => '07:00-19:00', 'vendredi' => '07:00-19:00', 'samedi' => '07:00-19:00', 'dimanche' => '07:00-19:00'],
@@ -140,7 +140,7 @@ $company->fill([
     'hero_media_id' => $hero->id(),
     'og_media_id' => $hero->id(),
     'editorial_presentation' => 'Entreprise de couverture basée à Saint-Denis : rénovation, étanchéité et protection des toitures en tôle et en béton partout à La Réunion.',
-    'editorial_history' => 'Fondée par M. Guy Hart, installé à La Réunion depuis l’enfance, trente ans d’expérience dans la toiture. Équipe : Guy Hart et Fabien, collaborateur.',
+    'editorial_history' => 'Fondée par M. Guy Hart, artisan couvreur installé à La Réunion depuis l’enfance. Équipe : Guy Hart et Fabien, collaborateur.',
     'editorial_values' => 'Savoir-faire, réactivité, travail soigné, relation de confiance.',
     'editorial_work_method' => 'Déplacement et diagnostic gratuits, explication claire de l’origine du problème, devis gratuit, réalisation soignée des travaux.',
     'editorial_brands_used' => 'Zolpan, Sika.',
@@ -512,14 +512,27 @@ $home->fill([
 ]);
 $home->save();
 
-$legal = "Raison sociale : HART TOITURE\nForme juridique : entrepreneur individuel\nRCS : 912 159 290 R.C.S. Saint-Denis-de-la-Réunion\nSIRET : 912 159 290 00010\nTVA intracommunautaire : FR18912159290\nDirecteur de la publication : Guy HART\nAdresse : 1 route du Moufia, 97490 Saint-Denis, La Réunion\nTéléphone : " . HART_PHONE . "\nE-mail : " . HART_EMAIL
+$legal = "Raison sociale : Jennifer BEAU (HART TOITURE)\nNom commercial : HART TOITURE\nForme juridique : entrepreneur individuel\nRCS : 912 159 290 R.C.S. Saint-Denis-de-la-Réunion\nSIRET : 912 159 290 00010\nTVA intracommunautaire : FR18912159290\nDirecteur de la publication : Guy HART\nAdresse : 1 route du Moufia, 97490 Saint-Denis, La Réunion\nTéléphone : " . HART_PHONE . "\nE-mail : " . HART_EMAIL
     . "\nHébergement : Hostinger International Ltd, 61 Lordou Vironos Street, 6023 Larnaca, Chypre — www.hostinger.fr"
     . "\nLes contenus de ce site (textes, logo, photographies) sont la propriété de HART TOITURE et protégés par le droit de la propriété intellectuelle.";
+
+$mediation = "Conformément aux articles L.616-1 et R.616-1 du Code de la consommation, notre entreprise est affiliée au dispositif de médiation de la consommation suivant :\n"
+    . "Médiateur : Société Médiation Professionnelle (SMP), validée médiateur de la consommation par la CECMC (Commission d’Évaluation et de Contrôle de la Médiation de la Consommation)\n"
+    . "Président : M. Jean-Louis Lascoux\n"
+    . "Site internet : https://www.mediateur-consommation-smp.fr\n"
+    . "Adresse postale : 24 RUE ALBERT DE MUN, 33000 BORDEAUX, FRANCE\n"
+    . "N° de SIRET : 814 385 357 00011\n"
+    . "En cas de litige non résolu par une réclamation préalable écrite auprès de nos services, le consommateur peut saisir gratuitement le médiateur sur le site internet https://www.mediateur-consommation-smp.fr ou par voie postale à l'adresse indiquée ci-dessus.";
+
 $pages = [
     ['contact', 'contact', 'Contactez HART TOITURE', 'Contactez HART TOITURE à Saint-Denis : devis gratuit, urgence 24 h/24, intervention partout à La Réunion.', [['text', ['content' => 'Pour toute demande d’intervention, de devis ou de renseignement, contactez HART TOITURE. Nous répondons rapidement et intervenons partout à La Réunion, 7 j/7 de 7 h à 19 h, et 24 h/24 pour les urgences.']], ['form', ['form_type' => 'contact']]]],
     ['realizations', 'realisations', 'Nos réalisations', 'Chantiers de rénovation, peinture, traitement antirouille et étanchéité de toitures réalisés par HART TOITURE à La Réunion.', [['projects', []]]],
-    ['about', 'a-propos', 'Entreprise de couverture à Saint-Denis', 'HART TOITURE, entreprise de couverture fondée par Guy Hart : trente ans d’expérience au service des toitures de La Réunion.', []],
-    ['legal_mentions', 'mentions-legales', 'Mentions légales', 'Mentions légales du site HART TOITURE.', [['text', ['heading' => 'Informations légales', 'content' => $legal]]]],
+    ['tarifs', 'tarifs', 'Grille tarifaire — HART TOITURE', 'Consultez la grille tarifaire et les prix indicatifs des prestations de toiture, rénovation, étanchéité et urgence à La Réunion par HART TOITURE.', []],
+    ['about', 'a-propos', 'Entreprise de couverture à Saint-Denis', 'HART TOITURE, entreprise de couverture fondée par Guy Hart : savoir-faire et expertise au service des toitures de La Réunion.', []],
+    ['legal_mentions', 'mentions-legales', 'Mentions légales', 'Mentions légales du site HART TOITURE et médiateur de la consommation.', [
+        ['text', ['heading' => 'Informations légales', 'content' => $legal]],
+        ['text', ['heading' => 'Médiation de la consommation', 'content' => $mediation]]
+    ]],
     ['privacy', 'politique-confidentialite', 'Politique de confidentialité', 'Protection de vos données personnelles.', [['text', ['heading' => 'Données personnelles', 'content' => 'Les données personnelles que vous nous communiquez sont utilisées par HART TOITURE aux seules fins de répondre à votre demande. Elles ne sont jamais cédées à des tiers.' . "\nConformément au RGPD, vous disposez d’un droit d’accès, de rectification et de suppression de vos données. Pour l’exercer : " . HART_EMAIL . '. Vous pouvez également vous inscrire gratuitement sur la liste d’opposition au démarchage téléphonique Bloctel.']]]],
     ['cookies', 'politique-cookies', 'Politique cookies', 'Utilisation des cookies sur le site HART TOITURE.', [['text', ['heading' => 'Cookies', 'content' => 'Ce site utilise uniquement des cookies techniques nécessaires à son fonctionnement (session, sécurité des formulaires). Aucun cookie publicitaire n’est déposé sans votre consentement.']]]],
 ];
@@ -537,8 +550,8 @@ foreach ($pages as [$type, $slug, $title, $description, $blocks]) {
     }
 }
 
-// Anciennes URL du site toiture-reunion-hart.re.
-foreach (['/page-avis' => '/avis-clients', '/vie-privee' => '/politique-confidentialite', '/privacy' => '/politique-cookies'] as $from => $to) {
+// Anciennes URL du site toiture-reunion-hart.re et alias.
+foreach (['/grille-tarifaire' => '/tarifs', '/page-avis' => '/avis-clients', '/vie-privee' => '/politique-confidentialite', '/privacy' => '/politique-cookies'] as $from => $to) {
     $redirect = Redirect::first(['from_path' => $from]) ?? new Redirect();
     $redirect->fill(['from_path' => $from, 'to_path' => $to, 'status_code' => 301, 'is_active' => true]);
     $redirect->save();
@@ -562,7 +575,7 @@ $settings->set('content.service_copy_map', $serviceCopyMap);
 $settings->set('content.home_copy', [
     'hero_kicker' => 'Couvreur à Saint-Denis · Toute La Réunion',
     'hero_lead' => 'Rénovation, étanchéité et protection des toitures en tôle et en béton. Intervention rapide, diagnostic précis et solutions durables contre les fuites, la rouille et les intempéries.',
-    'hero_trust' => ['Urgences 24 h/24, 7 j/7', 'Déplacement et devis gratuits', '30 ans d’expérience'],
+    'hero_trust' => ['Urgences 24 h/24, 7 j/7', 'Déplacement et devis gratuits', 'Artisan qualifié'],
     'hero_card_title' => 'Une fuite ? Une urgence ?',
     'hero_card_text' => 'Nous intervenons 24 h/24 pour sécuriser votre habitation et stopper la fuite.',
     'photos' => [
@@ -572,7 +585,7 @@ $settings->set('content.home_copy', [
         'emergency' => $photo('nettoyage-toiture-apres'),
     ],
     'badges' => [
-        ['icon' => 'tool', 'title' => 'Savoir-faire', 'text' => '30 ans d’expérience en toiture'],
+        ['icon' => 'tool', 'title' => 'Savoir-faire', 'text' => 'Artisan couvreur qualifié'],
         ['icon' => 'clock', 'title' => 'Réactivité', 'text' => 'Urgences 24 h/24, 7 j/7'],
         ['icon' => 'shield', 'title' => 'Travail soigné', 'text' => 'Un ouvrage soigné et durable'],
         ['icon' => 'pin', 'title' => 'Proximité', 'text' => 'Basés à Saint-Denis, partout sur l’île'],
@@ -580,11 +593,11 @@ $settings->set('content.home_copy', [
     'services_eyebrow' => 'Nos services',
     'services_title' => 'Protéger votre toiture, de la fuite à l’étanchéité',
     'services_text' => 'Toitures en tôle ou en dalle béton : des solutions adaptées aux contraintes tropicales de La Réunion.',
-    'seal_value' => '30 ans',
-    'seal_label' => 'd’expérience',
+    'seal_value' => '100%',
+    'seal_label' => 'artisanal',
     'about_eyebrow' => 'Qui sommes-nous',
     'about_title' => 'Une entreprise locale, une équipe soudée',
-    'about_lead' => 'Fondée par Guy Hart, installé à La Réunion depuis l’enfance et fort de trente ans d’expérience, HART TOITURE a adapté des techniques éprouvées aux particularités climatiques de l’île. Avec Fabien, son collaborateur, il forme une équipe soudée dédiée à la rénovation et à l’étanchéité des toitures.',
+    'about_lead' => 'Fondée par Guy Hart, artisan couvreur installé à La Réunion depuis l’enfance, HART TOITURE a adapté des techniques éprouvées aux particularités climatiques de l’île. Avec Fabien, son collaborateur, il forme une équipe soudée dédiée à la rénovation et à l’étanchéité des toitures.',
     'why' => [
         ['icon' => 'search', 'title' => 'Un diagnostic honnête', 'text' => 'Nous vous expliquons clairement l’origine du problème avant toute intervention.'],
         ['icon' => 'shield', 'title' => 'Des matériaux reconnus', 'text' => 'Produits Zolpan et Sika adaptés au climat tropical.'],

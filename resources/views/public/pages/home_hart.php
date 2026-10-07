@@ -97,7 +97,10 @@ $cities=array_values(array_filter(array_map('trim',explode(',',(string)($copy['z
         <?php if($why): ?><ul class="hh-why-list">
           <?php foreach($why as $point): ?><li><span><?= $icon((string)($point['icon']??'check')) ?></span><div><strong><?= e($point['title']??'') ?></strong><small><?= e($point['text']??'') ?></small></div></li><?php endforeach; ?>
         </ul><?php endif; ?>
-        <a class="hh-btn hh-btn-outline" href="/a-propos">Découvrir HART</a>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <a class="hh-btn hh-btn-outline" href="/a-propos">Découvrir HART</a>
+          <a class="hh-btn hh-btn-outline" href="/tarifs">Consulter les tarifs</a>
+        </div>
       </div>
     </div>
   </section>
@@ -113,6 +116,20 @@ $cities=array_values(array_filter(array_map('trim',explode(',',(string)($copy['z
       <div class="hh-actions">
         <?php if($phone!==''): ?><a class="hh-btn hh-btn-yellow" href="tel:<?= e($phoneHref) ?>"><?= $icon('phone') ?><?= e($phone) ?></a><?php endif; ?>
         <a class="hh-btn hh-btn-white" href="/recherche-fuite-et-urgence">Recherche de fuite et urgence</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="hh-pricing-strip">
+    <div class="hh-wrap hh-pricing-strip-inner">
+      <div>
+        <span class="hh-kicker" style="color:var(--hart-yellow)">Transparence des prix</span>
+        <h3>Des tarifs clairs et sans mauvaise surprise</h3>
+        <p>Déplacement et devis 100% gratuits partout à La Réunion. Consultez notre barème indicatif pour tous vos travaux de toiture.</p>
+      </div>
+      <div class="hh-pricing-actions">
+        <a class="hh-btn hh-btn-yellow" href="/tarifs">Voir la grille tarifaire →</a>
+        <a class="hh-btn hh-btn-white" href="#devis">Demander un devis</a>
       </div>
     </div>
   </section>

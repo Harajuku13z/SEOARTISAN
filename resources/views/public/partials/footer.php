@@ -31,6 +31,7 @@ $footerCategories = !empty($siteMenu) ? $siteMenu : ($menuServices ?? []);
       <h4>Navigation</h4>
       <a href="/avis-clients">Tous les avis clients</a>
       <a href="/realisations">Nos réalisations</a>
+      <a href="/tarifs">Grille tarifaire</a>
       <a href="/a-propos">À propos</a>
       <a href="/blog/">Blog & conseils</a>
       <a href="/contact">Demander un devis</a>
@@ -55,6 +56,8 @@ $footerCategories = !empty($siteMenu) ? $siteMenu : ($menuServices ?? []);
     <?php endif; ?>
     <div style="display:flex;flex-wrap:wrap;gap:8px 16px">
       <a href="/mentions-legales">Mentions légales</a>
+      <a href="/tarifs">Grille tarifaire</a>
+      <a href="/mentions-legales#mediateur">Médiation (SMP)</a>
       <a href="/politique-confidentialite">Confidentialité</a>
       <a href="/politique-cookies">Cookies</a>
     </div>

@@ -35,7 +35,7 @@ if(count($projects)<3)$projects=array_slice(array_values(array_filter(Project::v
         <a class="hh-btn hh-btn-red" href="#devis">Devis gratuit</a>
         <?php if($phone!==''): ?><a class="hh-btn hh-btn-yellow" href="tel:<?= e($phoneHref) ?>">☎ <?= e($phone) ?></a><?php endif; ?>
       </div>
-      <ul class="ll-trust"><li>Urgences 24 h/24, 7 j/7</li><li>Déplacement et devis gratuits</li><li>30 ans d’expérience</li></ul>
+      <ul class="ll-trust"><li>Urgences 24 h/24, 7 j/7</li><li>Déplacement et devis gratuits</li><li>Savoir-faire artisanal</li></ul>
     </div>
   </section>
 
